@@ -1,0 +1,13 @@
+# Configuração do nProtect-REBUILT 1.0
+# $ Código totalmente refeito. Precisa de suporte? Contate-me via discord: NickUltracraft#4550
+Config:
+    ComandosPermitidos:
+    - '/loginstaff'
+    - '/login'
+    - '/logar'
+    - '/register'
+    - '/registrar'
+    - '/captcha'
+    - '/email'
+    - '/twitter'
+    - '/pin'

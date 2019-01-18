@@ -1,0 +1,8 @@
+name: nProtect-REBUILT
+author: NickUltracraft
+version: 1.0
+main: me.NickUltracraft.Protect.Main
+website: https://nickuc.tk
+commands:
+    mudarsenha:
+    loginstaff:
