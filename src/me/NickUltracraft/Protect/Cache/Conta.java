@@ -24,8 +24,8 @@ public class Conta {
 	
 	private String name;
 	private String senha;
-	private boolean staffer;
-	private String ip;
+	private boolean staffer = false;
+	private String ip = "127.0.0.1";
 	
 	public Conta(String name) {
 		this.name = name;
@@ -40,11 +40,16 @@ public class Conta {
 			if (rs.next()) {
 				setIP(rs.getString("IP"));
 				setSenha(rs.getString("Senha"));
-				setStaffer(Boolean.valueOf(rs.getString("Staffer")));
+				if(Bukkit.getPlayer(name) != null && (Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
+					setStaffer(true);
+				} else if(Bukkit.getPlayer(name) != null && (!Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
+					setStaffer(false);
+				}
 			}
 			stm.close();
 		} catch (Exception e) {
 			new Console("Falha ao carregar usuario " + name, ConsoleLevel.ERRO).sendMessage();
+			e.printStackTrace();
 		}
 	}
 	public void submitChanges() {
@@ -54,27 +59,26 @@ public class Conta {
 			stm.setString(1, name.toLowerCase());
 			ResultSet rs = stm.executeQuery();
 			if (rs.next()) {
-				PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `Senha` = ?, `IP` = ?, `Staffer` = ? WHERE `Usuario` = ?");;
+				PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `Senha` = ?, `IP` = ?, WHERE `Usuario` = ?");;
 				PwManager pwManager = new PwManager(getSenha());
-				String salt = pwManager.generateRandomSalt();
-				stm2.setString(1, pwManager.processKey(getSenha(), salt) + "$" + getSalt());
+				String salt = getSalt();
+				stm2.setString(1, pwManager.processKey(getSenha(), salt) + "$" + salt);
 				stm2.setString(2, getIP());
-				stm2.setString(3, String.valueOf(isStaffer()));
-				stm2.setString(4, name.toLowerCase());
+				stm2.setString(3, name.toLowerCase());
 				stm2.executeUpdate();
 			} else {
-				PreparedStatement stm2 = connection.prepareStatement("INSERT INTO `nProtect`(`Usuario`,`Senha`,`IP`,`Staffer`) VALUES (?,?,?,?)");;
+				PreparedStatement stm2 = connection.prepareStatement("INSERT INTO `nProtect`(`Usuario`,`Senha`,`IP`) VALUES (?,?,?)");;
 				PwManager pwManager = new PwManager(getSenha());
 				String salt = pwManager.generateRandomSalt();
 				stm2.setString(1, name.toLowerCase());
-				stm2.setString(2, pwManager.processKey(getSenha(), salt) + "$" + getSalt());
+				stm2.setString(2, pwManager.processKey(getSenha(), salt) + "$" + salt);
 				stm2.setString(3, getIP());
-				stm2.setString(4, String.valueOf(isStaffer()));
 				stm2.executeUpdate();
 			}
 			stm.close();
 		} catch (Exception e) {
 			new Console("Falha ao carregar usuario " + name, ConsoleLevel.ERRO).sendMessage();
+			e.printStackTrace();
 		}
 	}
 	public String getName() {
@@ -90,11 +94,6 @@ public class Conta {
 		return ip;
 	}
 	public boolean isStaffer() {
-		if(Bukkit.getPlayer(name) != null && (Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
-			return true;
-		} else if(Bukkit.getPlayer(name) != null && (!Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
-			return false;
-		}
 		return staffer;
 	}
 	public void setSenha(String senha) {
@@ -115,6 +114,7 @@ public class Conta {
 			stm.close();
 		} catch (Exception e) {
 			new Console("Falha ao desregistrar usuario " + name, ConsoleLevel.ERRO).sendMessage();
+			e.printStackTrace();
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class Console {
 	public Console(String message, ConsoleLevel level) {
 		this.level = level;
 		if(message == null) {
-			this.message = "Texto nulo :(";
+			this.message = "Erro ao enviar esta mensagem.";
 			new IllegalArgumentException("Voce nao pode inserir textos nulos!");
 		} else {
 			this.message = message;
@@ -31,10 +31,13 @@ public class Console {
 		switch (level) {
 		case ALERTA:
 			sendMethod("§6[nProtect]");
+			return;
 		case ERRO:
 			sendMethod("§c[nProtect]");
+			return;
 		case INFO:
 			sendMethod("[nProtect]");
+			return;
 		}
 	}
 	private void sendMethod(String color) {

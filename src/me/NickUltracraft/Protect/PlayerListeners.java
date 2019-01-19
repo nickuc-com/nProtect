@@ -16,6 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import me.NickUltracraft.Protect.Cache.Arrays;
 import me.NickUltracraft.Protect.Cache.Conta;
 import me.NickUltracraft.Protect.Cache.Messages;
+import me.NickUltracraft.Protect.Cache.Settings;
+import me.NickUltracraft.Protect.Hooks.LoginCaller;
 
 /**
  * A class Listener.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
@@ -33,6 +35,18 @@ public class PlayerListeners implements Listener {
 		}
 		return false;
 	}
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onLogin(LoginCaller e) {
+		Player p = e.getPlayer();
+		p.setWalkSpeed(0);
+		p.setFlySpeed(0);
+		p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
+		if(Settings.getInstance().getCachedSetting("usar_title")) {
+			p.sendTitle("§e§lLOGIN STAFF", "Se autentique usando /loginstaff <senha>");
+		}
+	}
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
@@ -43,11 +57,19 @@ public class PlayerListeners implements Listener {
 				account.setSenha("nprotectloginstaff");
 				account.setStaffer(true);
 				account.submitChanges();
+				if(!Main.loginDetectado) {
+					p.setWalkSpeed(0);
+					p.setFlySpeed(0);
+					p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
+					if(Settings.getInstance().getCachedSetting("usar_title")) {
+						p.sendTitle("§e§lLOGIN STAFF", "Se autentique usando /loginstaff <senha>");
+					}
+				}
 			}
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					if(!Arrays.getInstance().estaLogado(p.getName())) p.kickPlayer(Messages.getInstance().getCachedMessage("demorou_logar"));
+					if(p != null && (!Arrays.getInstance().estaLogado(p))) p.kickPlayer(Messages.getInstance().getCachedMessage("demorou_logar"));
 				}
 			}.runTaskLater(Main.m, 20*25);
 		} else {
@@ -57,7 +79,7 @@ public class PlayerListeners implements Listener {
 	}
 	@EventHandler
 	public void onMexer(PlayerMoveEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName())); e.getPlayer().teleport(e.getFrom());
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.getPlayer().teleport(e.getFrom());
 	}
 	@EventHandler
 	public void onSair(PlayerQuitEvent e) {
@@ -65,22 +87,22 @@ public class PlayerListeners implements Listener {
 	}
 	@EventHandler
 	public void onFalar(AsyncPlayerChatEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName())); e.setCancelled(true);
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onComando(PlayerCommandPreprocessEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) e.setCancelled(true);
+		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName())); e.setCancelled(true);
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName())); e.setCancelled(true);
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer().getName())); e.setCancelled(true);
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
 	}
 }

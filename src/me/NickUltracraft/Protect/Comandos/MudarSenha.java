@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import me.NickUltracraft.Protect.Cache.Conta;
 import me.NickUltracraft.Protect.Cache.Messages;
+import me.NickUltracraft.Protect.Cache.Settings;
 
 /**
  * A class MudarSenha.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
@@ -18,6 +19,7 @@ import me.NickUltracraft.Protect.Cache.Messages;
 
 public final class MudarSenha implements CommandExecutor {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lb, String[] args) {
 		if(sender instanceof Player) {
@@ -28,15 +30,17 @@ public final class MudarSenha implements CommandExecutor {
 				return true;
 			} 
 			Conta account = new Conta(p.getName());
-			if(account.getSenha() == null) {
+			if(!account.isStaffer()) {
 				p.sendMessage(Messages.getInstance().getCachedMessage("nao_staffer"));
 				return true;
 			}
 			account.setIP(p.getAddress().getHostString());
 			account.setSenha(args[0]);
-			account.setStaffer(true);
 			account.submitChanges();
 			p.sendMessage(Messages.getInstance().getCachedMessage("mudousenha_sucesso"));
+			if(Settings.getInstance().getCachedSetting("usar_title")) {
+				p.sendTitle("§e§lLOGIN STAFF", "§eSua senha foi alterada.");
+			}
 		}
 		return false;
 	}

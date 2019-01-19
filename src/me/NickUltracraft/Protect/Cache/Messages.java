@@ -30,6 +30,7 @@ public class Messages {
 		messagesMap.put("autenticou_sucesso", "&aVocê se autenticou com sucesso como staffer.");
 		messagesMap.put("demorou_logar", "&cVocê demorou muito para se autenticar como staffer");
 		messagesMap.put("mudousenha_sucesso", "&aVocê alterou a sua senha com sucesso.");
+		messagesMap.put("mensagem_logar", "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>");
 	}
 	public String loadFromConfig(String path) {
 		FileConfiguration config = Main.m.getConfig(); return config.getString("Mensagens." + path);

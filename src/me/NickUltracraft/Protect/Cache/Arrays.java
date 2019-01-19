@@ -33,11 +33,8 @@ public class Arrays {
 	public void removerLogados(String username) {
 		if(jogadoresLogados.contains(username.toLowerCase())) jogadoresLogados.remove(username.toLowerCase());
 	}
-	public boolean estaLogado(String username) {
-		return jogadoresLogados.contains(username.toLowerCase());
-	}
 	public boolean estaLogado(Player player) {
-		if(!player.hasPermission("loginstaff.staff")) {
+		if(!player.hasPermission("loginstaff.staffer")) {
 			return true;
 		}
 		return jogadoresLogados.contains(player.getName().toLowerCase());

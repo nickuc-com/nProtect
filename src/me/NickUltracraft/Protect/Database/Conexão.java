@@ -43,7 +43,7 @@ public class Conexão {
 		try {
 			Class.forName("org.sqlite.JDBC");
 		    Statement stmt = getConnection().createStatement();
-		    stmt.execute("CREATE TABLE IF NOT EXISTS `nProtect`(`ID` INTEGER PRIMARY KEY, `Usuario` TEXT, `Staffer` TEXT, `Senha` TEXT, `IP` TEXT);");
+		    stmt.execute("CREATE TABLE IF NOT EXISTS `nProtect`(`ID` INTEGER PRIMARY KEY, `Usuario` TEXT, `Senha` TEXT, `IP` TEXT);");
 		    stmt.close();
 		} catch (Exception e) {
 			new Console("Nao foi possivel conectar a database " + type.name() + " e criar as tabelas", ConsoleLevel.ERRO).sendMessage();
