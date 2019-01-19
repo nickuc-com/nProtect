@@ -27,10 +27,12 @@ public class UpdaterCheck {
 		try {
 			String result = readFrom("https://www.nickuc.tk/plugin/info?nProtect").split("-")[0];
 			if(result.equalsIgnoreCase("Plugin inexistente.")) {
-				new Console("Erro ao checar por updates", ConsoleLevel.ERRO).sendMessage();;
+				new Console("Erro ao checar por updates", ConsoleLevel.ERRO).sendMessage();
+				atualizado = true;
 				return;
 			}
 			atualizado = result.equals(Main.m.getDescription().getVersion());
+			return;
 		} catch (Exception e) {
 			new Console("Erro ao checar por updates", ConsoleLevel.ERRO).sendMessage();;
 		}

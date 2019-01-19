@@ -43,7 +43,7 @@ public class PlayerListeners implements Listener {
 		p.setFlySpeed(0);
 		p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
 		if(Settings.getInstance().getCachedSetting("usar_title")) {
-			p.sendTitle("§e§lLOGIN STAFF", "Se autentique usando /loginstaff <senha>");
+			p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 		}
 	}
 	@SuppressWarnings("deprecation")
@@ -54,7 +54,7 @@ public class PlayerListeners implements Listener {
 			Conta account = new Conta(p.getName());
 			if(account.getSenha() == null || (!account.isStaffer())) {
 				account.setIP(p.getAddress().getHostString());
-				account.setSenha("nprotectloginstaff");
+				account.setSenha(Settings.getInstance().getCachedValue("senha_default"));
 				account.setStaffer(true);
 				account.submitChanges();
 				if(!Main.loginDetectado) {
@@ -62,10 +62,10 @@ public class PlayerListeners implements Listener {
 					p.setFlySpeed(0);
 					p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
 					if(Settings.getInstance().getCachedSetting("usar_title")) {
-						p.sendTitle("§e§lLOGIN STAFF", "Se autentique usando /loginstaff <senha>");
+						p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 					}
 				}
-			}
+			} 
 			new BukkitRunnable() {
 				@Override
 				public void run() {

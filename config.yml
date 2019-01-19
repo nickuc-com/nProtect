@@ -1,6 +1,13 @@
 # Configuração do nProtect-REBUILT 1.0
 # $ Código totalmente refeito. Precisa de suporte? Contate-me via discord: NickUltracraft#4550
 Config:
+    # Caso utilize uma versão muito antiga, altere este valor para false
+    UsarTitle: true
+    # Coloque aqui a senha adicionada automaticamente a uma pessoa nova no login staff.
+    # Nota: A senha pode ser alterada depois usando o comando /mudarsenhastaff.
+    # A senha salva na database não será alterada após mudar este valor.
+    SenhaDefault: 'nprotect'
+    # Lista de comandos permitidos antes de usar /loginstaff
     ComandosPermitidos:
     - '/loginstaff'
     - '/login'
@@ -11,3 +18,19 @@ Config:
     - '/email'
     - '/twitter'
     - '/pin'
+# Lista de todas as mensagens do plugin.
+# Caso uma mensagem não exista, o valor desta mensagem será default.
+Mensagens:
+    argumentos_invalidos: '&cVocê deve usar: /loginstaff <sua senha>'
+    argumentos_invalidos2: '&cVocê deve usar: /mudarsenhastaff <nova senha>'
+    nao_staffer: '&cVocê deve ser um staffer para executar este comando.'
+    ja_autenticado: '&cVocê já está autenticado como staffer.'
+    senha_incorreta: '&cA senha inserida está incorreta.'
+    autenticou_sucesso: '&aVocê se autenticou com sucesso como staffer.'
+    demorou_logar: '&cVocê demorou muito para se autenticar como staffer'
+    mudousenha_sucesso: '&aVocê alterou a sua senha com sucesso.'
+    mensagem_logar: '&ePara se autenticar como staffer, utilize /loginstaff <sua senha>'
+    loginstaff_title: '&e&lLOGIN STAFF'
+    logou_subtitle: '&eVocê logou com sucesso!'
+    mudousenha_subtitle: '&eVocê alterou sua senha.'
+    logar_subtitle: 'Se autentique usando /loginstaff <senha>'

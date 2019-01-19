@@ -45,12 +45,10 @@ public class Main extends JavaPlugin {
 		getCommand("mudarsenhastaff").setExecutor(new MudarSenha());
 		setupLoginPlugin();
 		if(!new UpdaterCheck().isAtualizado()) {
-			new Console("", ConsoleLevel.INFO).sendMessage();
 			new Console(" Uma nova versao do nProtect esta disponivel", ConsoleLevel.ALERTA).sendMessage();
-			new Console(" Baixe ja em https://www.nickuc.tk", ConsoleLevel.ALERTA).sendMessage();
 			new Console("", ConsoleLevel.INFO).sendMessage();
 		}
-		new Console(Inicializacao completa com sucesso", ConsoleLevel.ALERTA).sendMessage();
+		new Console("Inicializacao completa com sucesso", ConsoleLevel.ALERTA).sendMessage();
 	}
 	public void onDisable() {
 		new Conexão(ConnectionType.SQLITE).closeConnection();

@@ -59,9 +59,9 @@ public class Conta {
 			stm.setString(1, name.toLowerCase());
 			ResultSet rs = stm.executeQuery();
 			if (rs.next()) {
-				PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `Senha` = ?, `IP` = ?, WHERE `Usuario` = ?");;
+				PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `Senha` = ?, `IP` = ? WHERE `Usuario` = ?");
 				PwManager pwManager = new PwManager(getSenha());
-				String salt = getSalt();
+				String salt = pwManager.generateRandomSalt();
 				stm2.setString(1, pwManager.processKey(getSenha(), salt) + "$" + salt);
 				stm2.setString(2, getIP());
 				stm2.setString(3, name.toLowerCase());
@@ -78,6 +78,18 @@ public class Conta {
 			stm.close();
 		} catch (Exception e) {
 			new Console("Falha ao carregar usuario " + name, ConsoleLevel.ERRO).sendMessage();
+			e.printStackTrace();
+		}
+	}
+	public void updateIP() {
+		try {
+			Connection connection = new Conexão(ConnectionType.SQLITE).getConnection();
+			PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `IP` = ? WHERE `Usuario` = ?");
+			stm2.setString(1, getIP());
+			stm2.setString(2, name.toLowerCase());
+			stm2.executeUpdate();
+		} catch (Exception e) {
+			new Console("Falha ao atualizar o ip do usuario " + name, ConsoleLevel.ERRO).sendMessage();
 			e.printStackTrace();
 		}
 	}

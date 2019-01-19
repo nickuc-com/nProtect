@@ -52,7 +52,11 @@ public final class LoginStaff implements CommandExecutor {
 			Arrays.getInstance().adicionarLogados(p.getName());
 			p.sendMessage(Messages.getInstance().getCachedMessage("autenticou_sucesso"));
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				p.sendTitle("§e§lLOGIN STAFF", "§eVocê logou com sucesso!");
+				p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
+			}
+			if(!account.getIP().equals(p.getAddress().getHostString())) {
+				account.setIP(p.getAddress().getHostString());
+				account.updateIP();
 			}
 			p.setWalkSpeed((float)0.2);
 			p.setFlySpeed((float)0.2);

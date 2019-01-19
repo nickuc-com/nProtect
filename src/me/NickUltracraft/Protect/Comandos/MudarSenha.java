@@ -26,7 +26,7 @@ public final class MudarSenha implements CommandExecutor {
 			Player p = (Player)sender;
 			int lenght = args.length;
 			if(lenght != 1) {
-				p.sendMessage(Messages.getInstance().getCachedMessage("argumentos_invalidos"));
+				p.sendMessage(Messages.getInstance().getCachedMessage("argumentos_invalidos2"));
 				return true;
 			} 
 			Conta account = new Conta(p.getName());
@@ -39,7 +39,7 @@ public final class MudarSenha implements CommandExecutor {
 			account.submitChanges();
 			p.sendMessage(Messages.getInstance().getCachedMessage("mudousenha_sucesso"));
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				p.sendTitle("§e§lLOGIN STAFF", "§eSua senha foi alterada.");
+				p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("mudousenha_subtitle"));
 			}
 		}
 		return false;
