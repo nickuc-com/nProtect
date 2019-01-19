@@ -39,11 +39,13 @@ public class PlayerListeners implements Listener {
 	@EventHandler
 	public void onLogin(LoginCaller e) {
 		Player p = e.getPlayer();
-		p.setWalkSpeed(0);
-		p.setFlySpeed(0);
-		p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
-		if(Settings.getInstance().getCachedSetting("usar_title")) {
-			p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+		if(p.hasPermission("loginstaffer.staff")) {
+			p.setWalkSpeed(0);
+			p.setFlySpeed(0);
+			p.sendMessage(Messages.getInstance().getCachedMessage("mensagem_logar"));
+			if(Settings.getInstance().getCachedSetting("usar_title")) {
+				p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+			}
 		}
 	}
 	@SuppressWarnings("deprecation")
