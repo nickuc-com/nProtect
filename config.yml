@@ -5,6 +5,7 @@ Config:
     UsarTitle: true
     # Coloque aqui a senha adicionada automaticamente a uma pessoa nova no login staff.
     # Nota: A senha pode ser alterada depois usando o comando /mudarsenhastaff.
+    # Para se tornar um staffer do nProtect use a permissão 'loginstaff.staffer'.
     # A senha salva na database não será alterada após mudar este valor.
     SenhaDefault: 'nprotect'
     # Lista de comandos permitidos antes de usar /loginstaff
