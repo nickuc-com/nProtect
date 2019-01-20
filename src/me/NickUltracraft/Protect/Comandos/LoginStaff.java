@@ -46,7 +46,7 @@ public final class LoginStaff implements CommandExecutor {
 			}
 			if(!new PwManager(password).comparatePassword(account.getSenha(), account.getSalt())) {
 				Bukkit.getPluginManager().callEvent(new PlayerWrongLoginStaffEvent(p.getName(), password));
-				new Console("O ip "+ip+" tentou entrar na conta Davi913 e errou a senha staff", ConsoleLevel.INVASAO).sendMessage();
+				new Console("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.", ConsoleLevel.INVASAO).sendMessage();
 				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
 				return true;
 			}
