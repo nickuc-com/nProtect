@@ -30,7 +30,7 @@ public class Console {
 	public void sendMessage() {
 		switch (level) {
 		case INVASAO:	
-			sendMethod("§c[POSSIVEL INVASAO] ");
+			sendMethod("§c[INVASAO] ");
 			return;
 		case ALERTA:
 			sendMethod("§6[nProtect]");
