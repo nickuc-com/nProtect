@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 /**
  * A class Console.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
+ * Mais informaÃ§Ãµes: https://nickuc.tk 
  *
  * Rebuild, do not copy
 */
@@ -13,7 +13,7 @@ import org.bukkit.Bukkit;
 public class Console {
 
 	public enum ConsoleLevel {
-		INFO, ERRO, ALERTA;
+		INFO, ERRO, ALERTA, INVASAO;
 	}
 	private String message;
 	private ConsoleLevel level = ConsoleLevel.INFO;
@@ -29,11 +29,14 @@ public class Console {
 	}
 	public void sendMessage() {
 		switch (level) {
+		case INVASAO:	
+			sendMethod("Â§c[INVASAO] ");
+			return;
 		case ALERTA:
-			sendMethod("§6[nProtect]");
+			sendMethod("Â§6[nProtect]");
 			return;
 		case ERRO:
-			sendMethod("§c[nProtect]");
+			sendMethod("Â§c[nProtect]");
 			return;
 		case INFO:
 			sendMethod("[nProtect]");
