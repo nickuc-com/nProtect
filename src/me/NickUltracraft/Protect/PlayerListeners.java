@@ -22,7 +22,7 @@ import me.NickUltracraft.Protect.Hooks.LoginCaller;
 /**
  * A class Listener.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
+ * Mais informaÃ§Ãµes: https://nickuc.tk 
  *
  * Rebuild, do not copy
 */
@@ -94,6 +94,10 @@ public class PlayerListeners implements Listener {
 	@EventHandler
 	public void onComando(PlayerCommandPreprocessEvent e) {
 		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) e.setCancelled(true);
+	}
+	@EventHandler
+	public void onInteragir(PlayerInteractEvent e) {
+		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e) {
