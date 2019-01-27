@@ -1,13 +1,13 @@
-package me.NickUltracraft.Protect.Database;
+package nickultracraft.protect.database;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import me.NickUltracraft.Protect.Console;
-import me.NickUltracraft.Protect.Main;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Main;
+import nickultracraft.protect.Console.ConsoleLevel;
 
 /**
  * A class Conexão.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

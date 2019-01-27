@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect;
+package nickultracraft.protect;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,16 +8,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.NickUltracraft.Protect.Cache.Arrays;
-import me.NickUltracraft.Protect.Cache.Conta;
-import me.NickUltracraft.Protect.Cache.Messages;
-import me.NickUltracraft.Protect.Cache.Settings;
-import me.NickUltracraft.Protect.Hooks.LoginCaller;
+import nickultracraft.protect.cache.Arrays;
+import nickultracraft.protect.cache.Conta;
+import nickultracraft.protect.cache.Messages;
+import nickultracraft.protect.cache.Settings;
+import nickultracraft.protect.hooks.LoginCaller;
 
 /**
  * A class Listener.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

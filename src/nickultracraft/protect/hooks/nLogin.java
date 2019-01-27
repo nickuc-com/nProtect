@@ -1,11 +1,11 @@
-package me.NickUltracraft.Protect.Hooks;
+package nickultracraft.protect.hooks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import rush.login.events.PlayerAuthLoginEvent;
-import rush.login.events.PlayerAuthRegisterEvent;
+import API.LoginEvent;
+import API.RegisterEvent;
 
 /**
  * A class nLogin.java do projeto (PLUGIN - nProtect REBUILT) pertence ao NickUltracraft
@@ -15,14 +15,15 @@ import rush.login.events.PlayerAuthRegisterEvent;
  * Rebuild, do not copy
 */
 
-public class MambaLogin implements Listener {
+public class nLogin implements Listener {
 	
 	@EventHandler
-	public void onLogar(PlayerAuthLoginEvent e) {
+	public void onLogar(LoginEvent e) {
 		Bukkit.getPluginManager().callEvent(new LoginCaller(e.getPlayer()));
 	}
 	@EventHandler
-	public void onRegistrar(PlayerAuthRegisterEvent e) {
+	public void onRegisterr(RegisterEvent e) {
 		Bukkit.getPluginManager().callEvent(new LoginCaller(e.getPlayer()));
 	}
+
 }

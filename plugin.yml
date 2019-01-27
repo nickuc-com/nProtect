@@ -1,7 +1,7 @@
 name: nProtect-REBUILT
 author: NickUltracraft
 version: 1.7
-main: me.NickUltracraft.Protect.Main
+main: nickultracraft.protect.Main
 website: https://nickuc.tk
 commands:
     mudarsenhastaff:

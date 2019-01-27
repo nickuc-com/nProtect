@@ -1,13 +1,13 @@
-package me.NickUltracraft.Protect.Comandos;
+package nickultracraft.protect.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.NickUltracraft.Protect.Cache.Conta;
-import me.NickUltracraft.Protect.Cache.Messages;
-import me.NickUltracraft.Protect.Cache.Settings;
+import nickultracraft.protect.cache.Conta;
+import nickultracraft.protect.cache.Messages;
+import nickultracraft.protect.cache.Settings;
 
 /**
  * A class MudarSenha.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

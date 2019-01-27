@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.API;
+package nickultracraft.protect.api;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,9 +7,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
-import me.NickUltracraft.Protect.Console;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
-import me.NickUltracraft.Protect.Main;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Main;
+import nickultracraft.protect.Console.ConsoleLevel;
 
 /**
  * A class UpdaterCheck.java do projeto (PLUGIN - nProtect REBUILT) pertence ao NickUltracraft

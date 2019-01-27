@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.Events;
+package nickultracraft.protect.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.API;
+package nickultracraft.protect.api;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

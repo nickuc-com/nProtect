@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.Comandos;
+package nickultracraft.protect.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -6,13 +6,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.NickUltracraft.Protect.API.PwManager;
-import me.NickUltracraft.Protect.Cache.Arrays;
-import me.NickUltracraft.Protect.Cache.Conta;
-import me.NickUltracraft.Protect.Cache.Messages;
-import me.NickUltracraft.Protect.Cache.Settings;
-import me.NickUltracraft.Protect.Events.PlayerLoginStaffEvent;
-import me.NickUltracraft.Protect.Events.PlayerWrongLoginStaffEvent;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Console.ConsoleLevel;
+import nickultracraft.protect.api.PwManager;
+import nickultracraft.protect.cache.Arrays;
+import nickultracraft.protect.cache.Conta;
+import nickultracraft.protect.cache.Messages;
+import nickultracraft.protect.cache.Settings;
+import nickultracraft.protect.events.PlayerLoginStaffEvent;
+import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
 
 /**
  * A class LoginStaff.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

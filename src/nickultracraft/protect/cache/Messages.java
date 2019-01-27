@@ -1,13 +1,13 @@
-package me.NickUltracraft.Protect.Cache;
+package nickultracraft.protect.cache;
 
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import me.NickUltracraft.Protect.Console;
-import me.NickUltracraft.Protect.Main;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Main;
+import nickultracraft.protect.Console.ConsoleLevel;
 
 /**
  * A class Messages.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

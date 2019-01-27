@@ -1,12 +1,12 @@
-package me.NickUltracraft.Protect.Cache;
+package nickultracraft.protect.cache;
 
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-import me.NickUltracraft.Protect.Console;
-import me.NickUltracraft.Protect.Main;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Main;
+import nickultracraft.protect.Console.ConsoleLevel;
 
 /**
  * A class Settings.java do projeto (PLUGIN - nProtect REBUILT) pertence ao NickUltracraft

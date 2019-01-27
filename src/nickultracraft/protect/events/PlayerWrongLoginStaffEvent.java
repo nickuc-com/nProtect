@@ -1,25 +1,24 @@
-package me.NickUltracraft.Protect.Hooks;
+package nickultracraft.protect.events;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class LoginCaller extends Event {
+public class PlayerWrongLoginStaffEvent extends Event {
 	
 	private static final HandlerList handlers = new HandlerList();
-	
-	private Player player;
+
 	private String name;
+	private String password;
 	
-	public LoginCaller(Player player) {
-		this.player = player;
-		this.name = player.getName();
-	}
-	public Player getPlayer() {
-		return player;
+	public PlayerWrongLoginStaffEvent(String name, String password) {
+		this.name = name;
+		this.password = password;
 	}
 	public String getPlayerName() {
 		return name;
+	}
+	public String getSenha() {
+		return password;
 	}
 	@Override
 	public HandlerList getHandlers() {

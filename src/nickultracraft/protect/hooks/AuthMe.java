@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.Hooks;
+package nickultracraft.protect.hooks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect.Cache;
+package nickultracraft.protect.cache;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
 
-import me.NickUltracraft.Protect.Console;
-import me.NickUltracraft.Protect.API.PwManager;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
-import me.NickUltracraft.Protect.Database.Conexão;
-import me.NickUltracraft.Protect.Database.Conexão.ConnectionType;
+import nickultracraft.protect.Console;
+import nickultracraft.protect.Console.ConsoleLevel;
+import nickultracraft.protect.api.PwManager;
+import nickultracraft.protect.database.Conexão;
+import nickultracraft.protect.database.Conexão.ConnectionType;
 
 /**
  * A class Conta.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft

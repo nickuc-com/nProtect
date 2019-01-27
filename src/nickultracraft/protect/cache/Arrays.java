@@ -1,11 +1,11 @@
-package me.NickUltracraft.Protect.Cache;
+package nickultracraft.protect.cache;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import me.NickUltracraft.Protect.Main;
+import nickultracraft.protect.Main;
 /**
  * A class Arrays.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550

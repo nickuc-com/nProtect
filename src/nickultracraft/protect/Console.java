@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect;
+package nickultracraft.protect;
 
 import org.bukkit.Bukkit;
 

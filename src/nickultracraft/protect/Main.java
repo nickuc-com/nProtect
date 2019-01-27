@@ -1,4 +1,4 @@
-package me.NickUltracraft.Protect;
+package nickultracraft.protect;
 
 import java.io.File;
 
@@ -7,18 +7,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.NickUltracraft.Protect.API.UpdaterCheck;
-import me.NickUltracraft.Protect.Cache.Arrays;
-import me.NickUltracraft.Protect.Cache.Messages;
-import me.NickUltracraft.Protect.Cache.Settings;
-import me.NickUltracraft.Protect.Comandos.LoginStaff;
-import me.NickUltracraft.Protect.Comandos.MudarSenha;
-import me.NickUltracraft.Protect.Console.ConsoleLevel;
-import me.NickUltracraft.Protect.Database.Conexão;
-import me.NickUltracraft.Protect.Database.Conexão.ConnectionType;
-import me.NickUltracraft.Protect.Hooks.AuthMe;
-import me.NickUltracraft.Protect.Hooks.MambaLogin;
-import me.NickUltracraft.Protect.Hooks.nLogin;
+import nickultracraft.protect.Console.ConsoleLevel;
+import nickultracraft.protect.api.UpdaterCheck;
+import nickultracraft.protect.cache.Arrays;
+import nickultracraft.protect.cache.Messages;
+import nickultracraft.protect.cache.Settings;
+import nickultracraft.protect.commands.LoginStaff;
+import nickultracraft.protect.commands.MudarSenha;
+import nickultracraft.protect.database.Conexão;
+import nickultracraft.protect.database.Conexão.ConnectionType;
+import nickultracraft.protect.hooks.AuthMe;
+import nickultracraft.protect.hooks.MambaLogin;
+import nickultracraft.protect.hooks.nLogin;
 
 /**
  * A class Main.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
