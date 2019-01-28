@@ -1,4 +1,4 @@
-<img src="https://www.spigotmc.org/attachments/nlogin-png.362989/" alt="nProtect" style="width: 250px;"/>
+<img src="https://gamersboard.com.br/uploads/monthly_2018_10/nProtect.png.e88b17c2ba322bc75b551ba90240735e.png" alt="nProtect" style="width: 250px;"/>
 
  <strong><li>Spigot:</li></strong> https://www.spigotmc.org/resources/nprotect.61412/
  <strong><li>GamersBoard:</li></strong> https://gamersboard.com.br/topic/60312-nlogin-um-plugin-avan%C3%A7ado-de-autentica%C3%A7%C3%A3o
