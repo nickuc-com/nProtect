@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import API.LoginEvent;
-import API.RegisterEvent;
+import nickultracraft.login.events.LoginEvent;
+import nickultracraft.login.events.RegisterEvent;
 
 /**
  * A class nLogin.java do projeto (PLUGIN - nProtect REBUILT) pertence ao NickUltracraft

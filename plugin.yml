@@ -1,8 +1,10 @@
 name: nProtect-REBUILT
 author: NickUltracraft
-version: 1.7
+version: 1.8
 main: nickultracraft.protect.Main
 website: https://nickuc.tk
 commands:
     mudarsenhastaff:
+        aliases: [/changepasswordstaff]
     loginstaff:
+        aliases: [/ls]
