@@ -8,14 +8,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import nickultracraft.protect.Console.ConsoleLevel;
+import nickultracraft.protect.api.CopiadorInterno;
+import nickultracraft.protect.api.Metrics;
 import nickultracraft.protect.api.UpdaterCheck;
 import nickultracraft.protect.cache.Arrays;
 import nickultracraft.protect.cache.Messages;
 import nickultracraft.protect.cache.Settings;
 import nickultracraft.protect.commands.LoginStaff;
 import nickultracraft.protect.commands.MudarSenha;
-import nickultracraft.protect.database.Conexão;
-import nickultracraft.protect.database.Conexão.ConnectionType;
+import nickultracraft.protect.database.Conexao;
+import nickultracraft.protect.database.Conexao.ConnectionType;
 import nickultracraft.protect.hooks.AuthMe;
 import nickultracraft.protect.hooks.MambaLogin;
 import nickultracraft.protect.hooks.nLogin;
@@ -36,10 +38,12 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		m = this;
 		createConfig("config.yml");
+		setupUpdater();
+		new Metrics(this);
 		Arrays.getInstance().loadComandos();
 		new Messages().loadMessages();
 		new Settings().loadSettings();
-		new Conexão(ConnectionType.SQLITE).createDatabase();
+		new Conexao(ConnectionType.SQLITE).createDatabase();
 		registerListener(new PlayerListeners());
 		getCommand("loginstaff").setExecutor(new LoginStaff());
 		getCommand("mudarsenhastaff").setExecutor(new MudarSenha());
@@ -51,7 +55,18 @@ public class Main extends JavaPlugin {
 		new Console("Inicializacao completa com sucesso", ConsoleLevel.ALERTA).sendMessage();
 	}
 	public void onDisable() {
-		new Conexão(ConnectionType.SQLITE).closeConnection();
+		new Conexao(ConnectionType.SQLITE).closeConnection();
+	}
+	private void setupUpdater() {
+		PluginManager pm = getServer().getPluginManager();
+		if(pm.getPlugin("NickUC-Updater") == null) {
+			File Plugin = new File(Main.m.getDataFolder().getParentFile(), "nUpdater.jar");
+			new CopiadorInterno("nickultracraft/protect/api/updater/nUpdater.jar", Plugin);
+			try {
+				pm.loadPlugin(Plugin);
+				pm.enablePlugin(pm.getPlugin("NickUC-Updater"));
+			} catch (Exception e) {}
+		} 
 	}
 	private void setupLoginPlugin() {
 		PluginManager pm = Bukkit.getPluginManager();

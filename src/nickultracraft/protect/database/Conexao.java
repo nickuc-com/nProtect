@@ -17,7 +17,7 @@ import nickultracraft.protect.Console.ConsoleLevel;
  * Rebuild, do not copy
 */
 
-public class Conexão {
+public class Conexao {
 	
 	public static Connection connectionCache = null;
 	private ConnectionType type = ConnectionType.SQLITE;
@@ -25,7 +25,7 @@ public class Conexão {
 	public enum ConnectionType {
 		MYSQL, SQLITE;
 	}
-	public Conexão(ConnectionType type) {
+	public Conexao(ConnectionType type) {
 		this.type = type;
 	}
 	public Connection getConnection() {

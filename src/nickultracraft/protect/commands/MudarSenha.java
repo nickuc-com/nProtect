@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import nickultracraft.protect.api.TitleAPI;
 import nickultracraft.protect.cache.Conta;
 import nickultracraft.protect.cache.Messages;
 import nickultracraft.protect.cache.Settings;
@@ -19,7 +20,6 @@ import nickultracraft.protect.cache.Settings;
 
 public final class MudarSenha implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lb, String[] args) {
 		if(sender instanceof Player) {
@@ -39,7 +39,7 @@ public final class MudarSenha implements CommandExecutor {
 			account.submitChanges();
 			p.sendMessage(Messages.getInstance().getCachedMessage("mudousenha_sucesso"));
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("mudousenha_subtitle"));
+				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("mudousenha_subtitle"));
 			}
 		}
 		return false;
