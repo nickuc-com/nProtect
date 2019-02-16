@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import nickultracraft.protect.Console;
 import nickultracraft.protect.Console.ConsoleLevel;
 import nickultracraft.protect.api.PwManager;
+import nickultracraft.protect.api.TitleAPI;
 import nickultracraft.protect.cache.Arrays;
 import nickultracraft.protect.cache.Conta;
 import nickultracraft.protect.cache.Messages;
@@ -26,7 +27,6 @@ import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
 
 public final class LoginStaff implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lb, String[] args) {
 		if(sender instanceof Player) {
@@ -55,7 +55,7 @@ public final class LoginStaff implements CommandExecutor {
 			Arrays.getInstance().adicionarLogados(p.getName());
 			p.sendMessage(Messages.getInstance().getCachedMessage("autenticou_sucesso"));
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				p.sendTitle(Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
+				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
 			}
 			if(!account.getIP().equals(p.getAddress().getHostString())) {
 				account.setIP(p.getAddress().getHostString());

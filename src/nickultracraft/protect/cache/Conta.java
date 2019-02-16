@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import nickultracraft.protect.Console;
 import nickultracraft.protect.Console.ConsoleLevel;
+import nickultracraft.protect.Main;
 import nickultracraft.protect.api.PwManager;
-import nickultracraft.protect.database.Conexão;
-import nickultracraft.protect.database.Conexão.ConnectionType;
+import nickultracraft.protect.database.Conexao;
+import nickultracraft.protect.database.Conexao.ConnectionType;
 
 /**
  * A class Conta.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
@@ -33,19 +35,22 @@ public class Conta {
 	}
 	public void loadAccount() {
 		try {
-			Connection connection = new Conexão(ConnectionType.SQLITE).getConnection();
+			Connection connection = new Conexao(ConnectionType.SQLITE).getConnection();
 			PreparedStatement stm = connection.prepareStatement("SELECT * FROM `nProtect` WHERE `Usuario` = ?");;
 			stm.setString(1, name.toLowerCase());
 			ResultSet rs = stm.executeQuery();
 			if (rs.next()) {
 				setIP(rs.getString("IP"));
 				setSenha(rs.getString("Senha"));
-				if(Bukkit.getPlayer(name) != null && (Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
-					setStaffer(true);
-				} else if(Bukkit.getPlayer(name) != null && (!Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
-					setStaffer(false);
-				}
 			}
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(Bukkit.getPlayer(name) != null && (Bukkit.getPlayer(name).hasPermission("loginstaff.staffer"))) {
+						setStaffer(true);
+					} 
+				}
+			}.runTaskLater(Main.m, 10);
 			stm.close();
 		} catch (Exception e) {
 			new Console("Falha ao carregar usuario " + name, ConsoleLevel.ERRO).sendMessage();
@@ -54,7 +59,7 @@ public class Conta {
 	}
 	public void submitChanges() {
 		try {
-			Connection connection = new Conexão(ConnectionType.SQLITE).getConnection();
+			Connection connection = new Conexao(ConnectionType.SQLITE).getConnection();
 			PreparedStatement stm = connection.prepareStatement("SELECT * FROM `nProtect` WHERE `Usuario` = ?");;
 			stm.setString(1, name.toLowerCase());
 			ResultSet rs = stm.executeQuery();
@@ -83,7 +88,7 @@ public class Conta {
 	}
 	public void updateIP() {
 		try {
-			Connection connection = new Conexão(ConnectionType.SQLITE).getConnection();
+			Connection connection = new Conexao(ConnectionType.SQLITE).getConnection();
 			PreparedStatement stm2 = connection.prepareStatement("UPDATE `nProtect` SET `IP` = ? WHERE `Usuario` = ?");
 			stm2.setString(1, getIP());
 			stm2.setString(2, name.toLowerCase());
@@ -119,7 +124,7 @@ public class Conta {
 	}
 	public void delete() {
 		try {
-			Connection connection = new Conexão(ConnectionType.SQLITE).getConnection();
+			Connection connection = new Conexao(ConnectionType.SQLITE).getConnection();
 			PreparedStatement stm = connection.prepareStatement("DELETE FROM `nProtect` WHERE Usuario = ?");
 			stm.setString(1, name.toLowerCase());
 			stm.executeUpdate();

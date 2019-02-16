@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import API.LoginEvent;
+import fr.xephi.authme.events.LoginEvent;
 
 /**
  * A class nLogin.java do projeto (PLUGIN - nProtect REBUILT) pertence ao NickUltracraft
