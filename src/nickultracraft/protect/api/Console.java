@@ -1,13 +1,14 @@
-package nickultracraft.protect;
+package nickultracraft.protect.api;
 
 import org.bukkit.Bukkit;
 
 /**
- * A class Console.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
+ * A class Console.java da package (nickultracraft.protect) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.tk 
  *
- * Rebuild, do not copy
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link do download/source original.
 */
 
 public class Console {
@@ -30,7 +31,7 @@ public class Console {
 	public void sendMessage() {
 		switch (level) {
 		case INVASAO:	
-			sendMethod("§c[INVASAO] ");
+			sendMethod("§c[Invasao] ");
 			return;
 		case ALERTA:
 			sendMethod("§6[nProtect]");

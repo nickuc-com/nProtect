@@ -1,6 +1,6 @@
-name: nProtect-REBUILT
+name: nProtect
 author: NickUltracraft
-version: 1.9
+version: 2.0
 main: nickultracraft.protect.Main
 website: https://nickuc.tk
 commands:

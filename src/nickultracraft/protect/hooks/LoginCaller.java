@@ -4,6 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * A class LoginCaller.java da package (nickultracraft.protect.hooks) pertence ao NickUltracraft
+ * Discord: NickUltracraft#4550
+ * Mais informações: https://nickuc.tk 
+ *
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link do download/source original.
+*/
+
 public class LoginCaller extends Event {
 	
 	private static final HandlerList handlers = new HandlerList();

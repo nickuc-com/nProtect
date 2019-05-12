@@ -6,23 +6,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import nickultracraft.protect.Console;
-import nickultracraft.protect.Console.ConsoleLevel;
-import nickultracraft.protect.api.PwManager;
-import nickultracraft.protect.api.TitleAPI;
-import nickultracraft.protect.cache.Arrays;
-import nickultracraft.protect.cache.Conta;
-import nickultracraft.protect.cache.Messages;
-import nickultracraft.protect.cache.Settings;
-import nickultracraft.protect.events.PlayerLoginStaffEvent;
+import nickultracraft.protect.api.Console;
+import nickultracraft.protect.api.Console.ConsoleLevel;
 import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
+import nickultracraft.protect.objetos.Arrays;
+import nickultracraft.protect.objetos.Conta;
+import nickultracraft.protect.objetos.Messages;
 
 /**
- * A class LoginStaff.java do projeto (PLUGIN - nProtect Rebuilt) pertence ao NickUltracraft
+ * A class LoginStaff.java da package (nickultracraft.protect.commands) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.tk 
  *
- * Rebuild, do not copy
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link do download/source original.
 */
 
 public final class LoginStaff implements CommandExecutor {
@@ -41,30 +38,21 @@ public final class LoginStaff implements CommandExecutor {
 				p.sendMessage(Messages.getInstance().getCachedMessage("nao_staffer"));
 				return true;
 			}
-			String password = args[0];
 			if(Arrays.getInstance().estaLogado(p)) {
 				p.sendMessage(Messages.getInstance().getCachedMessage("ja_autenticado"));
 				return true;
 			}
-			if(!new PwManager(password).comparatePassword(account.getSenha(), account.getSalt())) {
+			String password = args[0];
+			if(!account.getSenha().equals(password)) {
 				Bukkit.getPluginManager().callEvent(new PlayerWrongLoginStaffEvent(p.getName(), password));
 				new Console("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.", ConsoleLevel.INVASAO).sendMessage();
 				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
 				return true;
 			}
-			Arrays.getInstance().adicionarLogados(p.getName());
-			p.sendMessage(Messages.getInstance().getCachedMessage("autenticou_sucesso"));
-			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
-			}
-			if(!account.getIP().equals(p.getAddress().getHostString())) {
-				account.setIP(p.getAddress().getHostString());
-				account.updateIP();
-			}
-			p.setWalkSpeed((float)0.2);
-			p.setFlySpeed((float)0.2);
-			Bukkit.getPluginManager().callEvent(new PlayerLoginStaffEvent(p, password));
+			account.forceLogin(p);
+			return true;
 		}
+		sender.sendMessage("§cComando indisponível para console.");
 		return false;
 	}
 
