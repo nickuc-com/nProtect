@@ -1,4 +1,4 @@
-package nickultracraft.protect.objetos;
+package nickultracraft.protect.objects;
 
 import java.util.ArrayList;
 import java.util.List;

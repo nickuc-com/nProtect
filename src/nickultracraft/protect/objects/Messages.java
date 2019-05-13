@@ -1,4 +1,4 @@
-package nickultracraft.protect.objetos;
+package nickultracraft.protect.objects;
 
 import java.util.HashMap;
 

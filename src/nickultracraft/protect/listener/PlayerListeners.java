@@ -18,10 +18,10 @@ import nickultracraft.protect.nProtect;
 import nickultracraft.protect.api.TitleAPI;
 import nickultracraft.protect.hooks.LoginCaller;
 import nickultracraft.protect.hooks.LoginPluginType;
-import nickultracraft.protect.objetos.Arrays;
-import nickultracraft.protect.objetos.Conta;
-import nickultracraft.protect.objetos.Messages;
-import nickultracraft.protect.objetos.Settings;
+import nickultracraft.protect.objects.Arrays;
+import nickultracraft.protect.objects.Conta;
+import nickultracraft.protect.objects.Messages;
+import nickultracraft.protect.objects.Settings;
 
 /**
  * A class PlayerListeners.java da package (nickultracraft.protect) pertence ao NickUltracraft
@@ -53,7 +53,7 @@ public class PlayerListeners implements Listener {
 			p.setFlySpeed(0);
 			p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				TitleAPI.sendTitle(p, 0, 20, 20, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class PlayerListeners implements Listener {
 				p.setFlySpeed(0);
 				p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
 				if(Settings.getInstance().getCachedSetting("usar_title")) {
-					TitleAPI.sendTitle(p, 0, 20, 20, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+					TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 				}
 			}
 		}

@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 import nickultracraft.protect.api.Console;
 import nickultracraft.protect.api.Console.ConsoleLevel;
 import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
-import nickultracraft.protect.objetos.Arrays;
-import nickultracraft.protect.objetos.Conta;
-import nickultracraft.protect.objetos.Messages;
+import nickultracraft.protect.objects.Arrays;
+import nickultracraft.protect.objects.Conta;
+import nickultracraft.protect.objects.Messages;
 
 /**
  * A class LoginStaff.java da package (nickultracraft.protect.commands) pertence ao NickUltracraft

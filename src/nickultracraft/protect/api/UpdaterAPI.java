@@ -85,7 +85,8 @@ public class UpdaterAPI {
 		this.logger = plugin.getLogger();
 		this.prefix = "[" + pluginName.toUpperCase() + " UPDATER] ";
 		this.pluginCheck = "https://www.nickuc.tk/plugin/info?" + pluginName;
-		this.updaterLink = "https://www.nickuc.tk/plugin/download?id=2";
+		this.updaterLink = "https://www.nickuc.tk/plugin/download?id=7";
+		setDownloadLink("https://www.nickuc.tk/plugin/download?id=2");
 		
 		for(File file : plugin.getDataFolder().getParentFile().listFiles()) {
 			if(file.getName().contains(plugin.getName()) && (file.getName().endsWith(".jar"))) {

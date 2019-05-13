@@ -21,10 +21,10 @@ import nickultracraft.protect.hooks.plugins.AuthMe;
 import nickultracraft.protect.hooks.plugins.MambaLogin;
 import nickultracraft.protect.hooks.plugins.nLogin;
 import nickultracraft.protect.listener.PlayerListeners;
-import nickultracraft.protect.objetos.Arrays;
-import nickultracraft.protect.objetos.Grupo;
-import nickultracraft.protect.objetos.Messages;
-import nickultracraft.protect.objetos.Settings;
+import nickultracraft.protect.objects.Arrays;
+import nickultracraft.protect.objects.Grupo;
+import nickultracraft.protect.objects.Messages;
+import nickultracraft.protect.objects.Settings;
 
 /**
  * A class Main.java da package (nickultracraft.protect) pertence ao NickUltracraft
