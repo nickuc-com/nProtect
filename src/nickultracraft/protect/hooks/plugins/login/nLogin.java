@@ -1,4 +1,4 @@
-package nickultracraft.protect.hooks.plugins;
+package nickultracraft.protect.hooks.plugins.login;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

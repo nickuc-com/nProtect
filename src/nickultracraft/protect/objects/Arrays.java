@@ -34,7 +34,7 @@ public class Arrays {
 		if(jogadoresLogados.contains(username.toLowerCase())) jogadoresLogados.remove(username.toLowerCase());
 	}
 	public boolean estaLogado(Player player) {
-		if(!player.hasPermission("loginstaff.staffer")) { return true; } return jogadoresLogados.contains(player.getName().toLowerCase());
+		return jogadoresLogados.contains(player.getName().toLowerCase());
 	}
 
 }

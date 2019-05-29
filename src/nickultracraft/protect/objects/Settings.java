@@ -5,8 +5,7 @@ import java.util.HashMap;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import nickultracraft.protect.nProtect;
-import nickultracraft.protect.api.Console;
-import nickultracraft.protect.api.Console.ConsoleLevel;
+import nickultracraft.protect.api.ConsoleLogger;
 
 /**
  * A class Settings.java da package (nickultracraft.protect.cache) pertence ao NickUltracraft
@@ -30,9 +29,10 @@ public class Settings {
 			if(nProtect.m.getConfig().isSet("Config.UsarTitle")) add("usar_title", loadFromConfig("UsarTitle"));
 			if(nProtect.m.getConfig().isSet("Config.AutoLogin")) add("auto_login", loadFromConfig("AutoLogin"));
 			if(nProtect.m.getConfig().isSet("Config.TempoLogar")) add("tempo_logar", loadFromConfig("TempoLogar"));
+			if(nProtect.m.getConfig().isSet("Config.SenhaDefault")) add("senha_default_sem_cargo", loadFromConfig("SenhaDefault"));
 			addMissingSettings();
 		} catch (Exception e) {
-			new Console("Falha ao carregar as configuracoes. Usando valores default.", ConsoleLevel.ERRO).sendMessage();
+			ConsoleLogger.error("Falha ao carregar as configuracoes. Usando valores default.");
 			addMissingSettings();
 		}
 	}
@@ -40,6 +40,7 @@ public class Settings {
 		add("usar_title", "true");
 		add("auto_login", "true");
 		add("tempo_logar", "25");
+		add("senha_default_sem_cargo", "nprotect_default");
 	}
 	private void add(String id, String valor) {
 		if(!settingsMap.containsKey(id)) settingsMap.put(id, valor);

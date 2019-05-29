@@ -10,16 +10,19 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import nickultracraft.protect.api.Console;
 import nickultracraft.protect.api.Metrics;
 import nickultracraft.protect.api.UpdaterAPI;
-import nickultracraft.protect.api.Console.ConsoleLevel;
+import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.commands.LoginStaff;
 import nickultracraft.protect.hooks.LoginAbstract;
 import nickultracraft.protect.hooks.LoginPluginType;
-import nickultracraft.protect.hooks.plugins.AuthMe;
-import nickultracraft.protect.hooks.plugins.MambaLogin;
-import nickultracraft.protect.hooks.plugins.nLogin;
+import nickultracraft.protect.hooks.PermissionAbstract;
+import nickultracraft.protect.hooks.PermissionPluginType;
+import nickultracraft.protect.hooks.plugins.login.AuthMe;
+import nickultracraft.protect.hooks.plugins.login.MambaLogin;
+import nickultracraft.protect.hooks.plugins.login.nLogin;
+import nickultracraft.protect.hooks.plugins.permissions.LuckPerms;
+import nickultracraft.protect.hooks.plugins.permissions.PermissionsEx;
 import nickultracraft.protect.listener.PlayerListeners;
 import nickultracraft.protect.objects.Arrays;
 import nickultracraft.protect.objects.Grupo;
@@ -40,7 +43,9 @@ public class nProtect extends JavaPlugin {
 	public static nProtect m;
 	public static UpdaterAPI updaterAPI;
 	public static LoginPluginType loginPluginType;
+	public static PermissionPluginType permissionPluginType;
 	public static LoginAbstract loginAbstract;
+	public static PermissionAbstract permissionPlugin;
 	public static List<Grupo> grupos = new ArrayList<>();
 
 	public void onEnable() {
@@ -50,17 +55,17 @@ public class nProtect extends JavaPlugin {
 		updaterAPI = new UpdaterAPI(this, "nProtect");
 		updaterAPI.defaultEnableExecute();
 		if(updaterAPI.isUpdateAvailable()) {
-			new Console(" Uma nova versao do nProtect esta disponivel " + getDescription().getVersion() + " -> " + updaterAPI.getLastVersion(), ConsoleLevel.ALERTA).sendMessage();
-			new Console("", ConsoleLevel.INFO).sendMessage();
+			ConsoleLogger.warning(" Uma nova versao do nProtect esta disponivel " + getDescription().getVersion() + " -> " + updaterAPI.getLastVersion());
+			ConsoleLogger.info("");
 		}
 		Arrays.getInstance().loadComandos();
 		Messages.getInstance().loadMessages();
 		Settings.getInstance().loadSettings();
 		registerListeners();
 		registerCommands();
+		setupPermissionPlugin();
 		setupLoginPlugin();
-
-		new Console("Inicializacao completa com sucesso", ConsoleLevel.ALERTA).sendMessage();
+		ConsoleLogger.info("Inicializacao completa com sucesso");
 	}
 	public void onDisable() {
 		if(updaterAPI != null) updaterAPI.defaultDisableExecute();
@@ -68,10 +73,17 @@ public class nProtect extends JavaPlugin {
 	public static void setLoginAbstract(LoginAbstract loginAbstract, Listener listener, Plugin plugin, LoginPluginType loginPluginType) {
 		nProtect.loginAbstract = loginAbstract;
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
-		new Console("Usando listeners do " + plugin.getName(), ConsoleLevel.INFO).sendMessage();
+		ConsoleLogger.info("Vinculando sistema de registro do " + loginAbstract.getPluginName());
+	}
+	public static void setPermissionAbstract(PermissionAbstract permissionPlugin, Plugin plugin, PermissionPluginType permissionPluginType) {
+		nProtect.permissionPluginType = permissionPluginType;
+		ConsoleLogger.info("Vinculando sistema de permissões do " + permissionPlugin.getPluginName());
 	}
 	public static LoginAbstract getLoginAbstract() {
 		return loginAbstract;
+	}
+	public static PermissionAbstract getPermissionAbstract() {
+		return permissionPlugin;
 	}
 	private void setupLoginPlugin() {
 		PluginManager pm = Bukkit.getPluginManager();
@@ -87,7 +99,17 @@ public class nProtect extends JavaPlugin {
 			} catch (Exception e) {}
 		}
 		loginPluginType = LoginPluginType.UNKNOW;
-		new Console("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect", ConsoleLevel.INFO);
+		ConsoleLogger.warning("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect");
+	}
+	private void setupPermissionPlugin() {
+		PluginManager pm = Bukkit.getPluginManager();
+		if(pm.getPlugin("PermissionsEx") != null) {
+			setPermissionAbstract(new PermissionsEx(), this, PermissionPluginType.PERMISSIONSEX);
+		} else if(pm.getPlugin("LuckPerms") != null) {
+			setPermissionAbstract(new LuckPerms(), this, PermissionPluginType.LUCKPERMS);
+		}
+		permissionPluginType = PermissionPluginType.UNKNOW;
+		ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
 	}
 	private void manageConfig() {
 		if(!new File(getDataFolder(), "config.yml").exists()) saveResource("config.yml", false);
