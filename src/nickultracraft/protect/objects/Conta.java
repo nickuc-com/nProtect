@@ -8,12 +8,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import nickultracraft.protect.nProtect;
-import nickultracraft.protect.api.Console;
+import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.api.TitleAPI;
-import nickultracraft.protect.api.Console.ConsoleLevel;
 import nickultracraft.protect.events.PlayerLoginStaffEvent;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
+import nickultracraft.protect.hooks.PermissionPluginType;
 
 /**
  * A class Conta.java da package (nickultracraft.protect.cache) pertence ao NickUltracraft
@@ -37,13 +35,19 @@ public class Conta {
 	}
 	public void loadAccount() {
 		try {
-			PermissionUser permissionUser = PermissionsEx.getPermissionManager().getUser(name);
-			for(Grupo grupo : nProtect.grupos) {
-				if(permissionUser.inGroup(grupo.getGrupo())) this.grupo = grupo;
+			if(nProtect.permissionPluginType != PermissionPluginType.UNKNOW) {
+				for(Grupo grupo : nProtect.grupos) {
+					if(nProtect.getPermissionAbstract().inGroup(name, grupo.getGrupo())) this.grupo = grupo;
+				}
+			} else {
+				Player target = Bukkit.getPlayer(name);
+				if(target != null && target.hasPermission("loginstaff.staffer")) {
+					this.grupo = new Grupo("PERMISSION_GROUP", Settings.getInstance().getCachedValue("senha_default_sem_cargo")); 
+				}
 			}
 			setStaffer(grupo != null);
 		} catch (Exception e) {
-			new Console("Falha ao carregar usuario " + name, ConsoleLevel.ERRO).sendMessage();
+			ConsoleLogger.error("Falha ao carregar usuario " + name);
 			e.printStackTrace();
 		}
 	}

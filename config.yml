@@ -7,10 +7,13 @@ Config:
     Grupos:
         Mod: "nprotect_mod"
         Admin: "nprotect_admin"
-        Master: "nprotect.master"
+        Master: "nprotect.master" 
     # Caso utilize uma versão muito antiga, altere este valor para false,
     # para evitar problemas com erros.
     UsarTitle: true
+    # Um usuário não esta em nenhum grupo acima ou não utiliza nenhum plugin de permissões compativel e tem a permissão 'loginstaff.staffer',
+    # terá que usar qual senha para se logar?
+    SenhaDefault: "nprotect_default"
     # Loga automaticamente staffers que já se logaram com o mesmo ip anteriormente.
     AutoLogin: true
     # Tempo para um staffer se autenticar com o /loginstaff

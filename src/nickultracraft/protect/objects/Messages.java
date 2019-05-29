@@ -6,8 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import nickultracraft.protect.nProtect;
-import nickultracraft.protect.api.Console;
-import nickultracraft.protect.api.Console.ConsoleLevel;
+import nickultracraft.protect.api.ConsoleLogger;
 
 /**
  * A class Messages.java da package (nickultracraft.protect.cache) pertence ao NickUltracraft
@@ -33,7 +32,7 @@ public class Messages {
 			}
 			addMissingMessages();
 		} catch (Exception e) {
-			new Console("Falha ao carregar as mensagens. Usando valores default.", ConsoleLevel.ERRO).sendMessage();
+			ConsoleLogger.error("Falha ao carregar as mensagens. Usando valores default.");
 			addMissingMessages();
 		}
 	}

@@ -6,8 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import nickultracraft.protect.api.Console;
-import nickultracraft.protect.api.Console.ConsoleLevel;
+import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
 import nickultracraft.protect.objects.Arrays;
 import nickultracraft.protect.objects.Conta;
@@ -45,7 +44,7 @@ public final class LoginStaff implements CommandExecutor {
 			String password = args[0];
 			if(!account.getSenha().equals(password)) {
 				Bukkit.getPluginManager().callEvent(new PlayerWrongLoginStaffEvent(p.getName(), password));
-				new Console("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.", ConsoleLevel.INVASAO).sendMessage();
+				ConsoleLogger.invasion("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.");
 				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
 				return true;
 			}
