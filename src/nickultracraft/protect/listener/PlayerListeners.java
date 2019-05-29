@@ -80,6 +80,8 @@ public class PlayerListeners implements Listener {
 					TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 				}
 			}
+		} else {
+			Arrays.getInstance().adicionarLogados(p.getName());
 		}
 	}
 	@EventHandler
