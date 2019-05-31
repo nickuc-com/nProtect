@@ -72,11 +72,13 @@ public class nProtect extends JavaPlugin {
 	}
 	public static void setLoginAbstract(LoginAbstract loginAbstract, Listener listener, Plugin plugin, LoginPluginType loginPluginType) {
 		nProtect.loginAbstract = loginAbstract;
+		nProtect.loginPluginType = loginPluginType;
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
 		ConsoleLogger.info("Vinculando sistema de registro do " + loginAbstract.getPluginName());
 	}
 	public static void setPermissionAbstract(PermissionAbstract permissionPlugin, Plugin plugin, PermissionPluginType permissionPluginType) {
 		nProtect.permissionPluginType = permissionPluginType;
+		nProtect.permissionPlugin = permissionPlugin;
 		ConsoleLogger.info("Vinculando sistema de permissões do " + permissionPlugin.getPluginName());
 	}
 	public static LoginAbstract getLoginAbstract() {
@@ -97,9 +99,10 @@ public class nProtect extends JavaPlugin {
 				Class.forName("rush.login.events.PlayerAuthRegisterEvent");
 				setLoginAbstract(new MambaLogin(), new MambaLogin(), this, LoginPluginType.MAMBALOGIN);
 			} catch (Exception e) {}
+		} else {
+			loginPluginType = LoginPluginType.UNKNOW;
+			ConsoleLogger.warning("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect");
 		}
-		loginPluginType = LoginPluginType.UNKNOW;
-		ConsoleLogger.warning("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect");
 	}
 	private void setupPermissionPlugin() {
 		PluginManager pm = Bukkit.getPluginManager();
@@ -107,9 +110,10 @@ public class nProtect extends JavaPlugin {
 			setPermissionAbstract(new PermissionsEx(), this, PermissionPluginType.PERMISSIONSEX);
 		} else if(pm.getPlugin("LuckPerms") != null) {
 			setPermissionAbstract(new LuckPerms(), this, PermissionPluginType.LUCKPERMS);
+		} else {
+			permissionPluginType = PermissionPluginType.UNKNOW;
+			ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
 		}
-		permissionPluginType = PermissionPluginType.UNKNOW;
-		ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
 	}
 	private void manageConfig() {
 		if(!new File(getDataFolder(), "config.yml").exists()) saveResource("config.yml", false);

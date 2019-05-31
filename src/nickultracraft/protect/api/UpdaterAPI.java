@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import nickultracraft.updater.api.UpdaterManager;
 
@@ -26,44 +27,7 @@ import nickultracraft.updater.api.UpdaterManager;
 */
 
 public class UpdaterAPI {
-	
-	/* 
-	 * Sugestão de execuções para verificar se existe um update.
-	 * Você pode apenas carregar este objeto no onEnable() do seu plugin.
-	 */
-	public void defaultEnableExecute() {
-		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }
-		UpdaterAPI updaterApi = new UpdaterAPI(plugin, pluginName);
 		
-		/* Atualiza e verifica os dados da nova versao */
-		try {
-			updaterApi.checkUpdate();
-		} catch (Throwable e) {
-			e.printStackTrace();
-			logger.warning("Nao foi possivel verificar por novas atualizacoes.");
-		}
-		
-		/* Baixa a nova jar da nova versao */
-		try {
-			updaterApi.downloadUpdate();
-		} catch (Throwable e) {
-			e.printStackTrace();
-			logger.warning("Nao foi possivel realizar o download da atualizacao.");
-		}
-	}
-	public void defaultDisableExecute() {
-		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }
-		UpdaterAPI updaterApi = new UpdaterAPI(plugin, pluginName);
-		
-		/* Realiza a instalacao do arquivo baixado */
-		try {
-			updaterApi.installUpdate();
-		} catch (Throwable e) {
-			e.printStackTrace();
-			logger.warning("Nao foi possivel realizar a instalacao da atualizacao.");
-		}
-	}
-	
 	private Plugin plugin;
 	private File pluginFile;
 	private boolean updateAvailable;
@@ -86,6 +50,7 @@ public class UpdaterAPI {
 		this.prefix = "[" + pluginName.toUpperCase() + " UPDATER] ";
 		this.pluginCheck = "https://www.nickuc.tk/plugin/info?" + pluginName;
 		this.updaterLink = "https://www.nickuc.tk/plugin/download?id=7";
+		
 		setDownloadLink("https://www.nickuc.tk/plugin/download?id=2");
 		
 		for(File file : plugin.getDataFolder().getParentFile().listFiles()) {
@@ -95,6 +60,46 @@ public class UpdaterAPI {
 		}
 		if(pluginFile == null) this.pluginFile = new File(plugin.getDataFolder().getParentFile(), "nProtect.jar");
 	}
+	
+	/* 
+	 * Sugestão de execuções para verificar se existe um update.
+	 * Você pode apenas carregar este objeto no onEnable() do seu plugin.
+	 */
+	public void defaultEnableExecute() {
+		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				/* Atualiza e verifica os dados da nova versao */
+				try {
+					checkUpdate();
+				} catch (Throwable e) {
+					e.printStackTrace();
+					logger.warning("Nao foi possivel verificar por novas atualizacoes.");
+				}
+				
+				/* Baixa a nova jar da nova versao */
+				try {
+					downloadUpdate();
+				} catch (Throwable e) {
+					e.printStackTrace();
+					logger.warning("Nao foi possivel realizar o download da atualizacao.");
+				}
+			}
+		}.runTaskLaterAsynchronously(plugin, 20*30);
+	}
+	public void defaultDisableExecute() {
+		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }		
+		/* Realiza a instalacao do arquivo baixado */
+		try {
+			installUpdate();
+		} catch (Throwable e) {
+			e.printStackTrace();
+			logger.warning("Nao foi possivel realizar a instalacao da atualizacao.");
+		}
+	}
+	
 	public Plugin getPlugin() {
 		return plugin;
 	}
@@ -146,13 +151,13 @@ public class UpdaterAPI {
 	public void installUpdate() throws Throwable {
 		if(!isUpdateAvailable()) return;
 		downloadUpdater();
-		logger.info(prefix + "Iniciando instalacao da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + "...");
-		new UpdaterManager(pluginName).update(getPluginFile().getName().substring(getPluginFile().getName().length(), getPluginFile().getName().length()-4));
+		logger.info(prefix + "Iniciando instalacao da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + " -> " + getLastVersion() + "...");
+		new UpdaterManager(pluginName).update(getPluginFile().getName().substring(0, getPluginFile().getName().length()-4));
 	}
 	public void downloadUpdate() throws Throwable {
 		if(!isUpdateAvailable()) return;
 		downloadUpdater();
-		logger.info(prefix + "Iniciando download da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + "...");
+		logger.info(prefix + "Iniciando download da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + " -> " + getLastVersion() + "...");
 		new UpdaterManager(pluginName).baixar(getDownloadLink());
 	}
 	public void checkUpdate() throws Throwable {
@@ -168,7 +173,7 @@ public class UpdaterAPI {
         }
 		this.pluginLastVersion = sb.toString().split("-")[0];
 		this.pluginDownloadURL = sb.toString().split("-")[1];
-		this.updateAvailable = pluginLastVersion != plugin.getDescription().getVersion();
+		this.updateAvailable = !pluginLastVersion.equals(plugin.getDescription().getVersion());
 	}
  	public void downloadUpdater() throws Throwable {
 		if(plugin.getServer().getPluginManager().getPlugin("NickUC-Updater") == null) {
