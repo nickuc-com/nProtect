@@ -10,16 +10,14 @@
  Proteja seu servidor contra ataques hackers</li>
 
 # Permissões
-<li>loginstaff.staffer : Permissão para considerar um jogador como staffer.</li>
+<li>loginstaff.staffer : Permissão para considerar um jogador como staffer [Caso não utilize um plugin de permissão compatível].</li>
 
 # Recursos
 <li>Sistema para ações antes de se autenticar</li>
 <li>Suporte total para nLogin, AuthMe Reloaded e MambaLogin</li>
-<li>Suporte para database SQLITE (Em breve MYSQL)</li>
-<li>Senhas encriptadas com sistema de salt em SHA-256</li>
-<li>API para desenvolvedores (me.NickUltracraft.Protect.Events.*.)</li>
+<li>Suporte total para PermissionEx e LuckPerms</li>
+<li>API para desenvolvimento (nickultracraft.protect.events.* e nickultracraft.protect.objects.Conta)</li>
 <li>Código open-source! Contribua para o código se puder</li>
-<li>Senhas única para cada staffer</li>
 
 ## Estatísticas de Uso
 # Dados do NickUC-Updater
