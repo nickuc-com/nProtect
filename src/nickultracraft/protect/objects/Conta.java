@@ -69,9 +69,9 @@ public class Conta {
 		Arrays.getInstance().adicionarLogados(p.getName());
 		if(session) {
 			p.sendMessage(Messages.getInstance().getCachedMessage("logou_chat"));
-			if(Settings.getInstance().getCachedSetting("usar_title")) TitleAPI.sendTitle(p, 0, 3, 2, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
-		} else {
 			if(Settings.getInstance().getCachedSetting("usar_title")) TitleAPI.sendTitle(p, 0, 3, 2, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle_session"));
+		} else {
+			if(Settings.getInstance().getCachedSetting("usar_title")) TitleAPI.sendTitle(p, 0, 3, 2, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logou_subtitle"));
 		}
 		if(Settings.getInstance().getCachedSetting("auto_login")) {
 			try { if(!getIP().equals(p.getAddress().getHostString())) updateIP(p.getAddress().getHostString());	} catch (Exception e) {}

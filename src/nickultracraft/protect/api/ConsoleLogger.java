@@ -12,23 +12,17 @@ import org.bukkit.Bukkit;
 */
 
 public class ConsoleLogger {
-
-	public enum ConsoleLevel {
-		INFO, ERRO, ALERTA, INVASAO;
-	}
+	
 	public static void warning(String message) {
-		send("§6[nProtect] " + message);
+		Bukkit.getLogger().warning("§6" + message);
 	}
 	public static void error(String message) {
-		send("§c[nProtect] " + message);
+		Bukkit.getLogger().warning("§c" + message);
 	}
 	public static void invasion(String message) {
-		send("§c[Invasao] " + message);
+		Bukkit.getLogger().warning("§c[Invasao] " + message);
 	}
 	public static void info(String message) {
-		send("[nProtect] " + message);
-	}
-	private static void send(String message) {
-		Bukkit.getConsoleSender().sendMessage(message);
+		Bukkit.getLogger().info(message);
 	}
 }
