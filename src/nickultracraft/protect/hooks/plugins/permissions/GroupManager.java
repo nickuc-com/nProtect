@@ -1,11 +1,13 @@
 package nickultracraft.protect.hooks.plugins.permissions;
 
+import org.anjocaido.groupmanager.data.User;
+import org.anjocaido.groupmanager.dataholder.WorldDataHolder;
 import org.bukkit.entity.Player;
 
 import nickultracraft.protect.hooks.PermissionAbstract;
 
 /**
- * A class PermissionsEx.java da package (nickultracraft.protect.hooks.plugins.permissions) pertence ao NickUltracraft
+ * A class GroupManager.java da package (nickultracraft.protect.hooks.plugins.permissions) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.tk 
  *
@@ -13,13 +15,13 @@ import nickultracraft.protect.hooks.PermissionAbstract;
  * expressar e deixar claramente o link do download/source original.
 */
 
-public class PermissionsEx extends PermissionAbstract {
+public class GroupManager extends PermissionAbstract {
 
-	public PermissionsEx() {
-		super("PermissionsEx");
+	public GroupManager() {
+		super("GroupManager");
 	}
 	@Override
 	public boolean inGroup(Player player, String group) {
-		return ru.tehkode.permissions.bukkit.PermissionsEx.getPermissionManager().getUser(player).inGroup(group);
+		return new User(new WorldDataHolder(player.getWorld().getName()), player.getName()).getGroupName().equalsIgnoreCase(group);
 	}
 }

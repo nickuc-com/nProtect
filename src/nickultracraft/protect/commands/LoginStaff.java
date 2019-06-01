@@ -32,7 +32,7 @@ public final class LoginStaff implements CommandExecutor {
 				p.sendMessage(Messages.getInstance().getCachedMessage("argumentos_invalidos"));
 				return true;
 			} 
-			Conta account = new Conta(p.getName());
+			Conta account = new Conta(p);
 			if(!account.isStaffer()) {
 				p.sendMessage(Messages.getInstance().getCachedMessage("nao_staffer"));
 				return true;

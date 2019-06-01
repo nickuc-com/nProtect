@@ -37,7 +37,7 @@ public class PlayerListeners implements Listener {
 	@EventHandler
 	public void onLogin(LoginCaller e) {
 		Player p = e.getPlayer();
-		Conta account = new Conta(p.getName());
+		Conta account = new Conta(p);
 		if(account.isStaffer()) {
 			if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getIP()))) {
 				account.forceLogin(p, true);
@@ -60,7 +60,7 @@ public class PlayerListeners implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		Conta account = new Conta(p.getName());
+		Conta account = new Conta(p);
 		if(account.isStaffer()) {
 			if(nProtect.loginPluginType == LoginPluginType.UNKNOW) {
 				if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getIP()))) {
