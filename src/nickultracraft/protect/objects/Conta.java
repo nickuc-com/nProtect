@@ -24,20 +24,22 @@ import nickultracraft.protect.hooks.PermissionPluginType;
 
 public class Conta {
 	
+	private Player player;
 	private String name;
 	private Grupo grupo;
 	private String ip = "127.0.0.1";
 	private boolean staffer = false;
 	
-	public Conta(String name) {
-		this.name = name;
+	public Conta(Player player) {
+		this.player = player;
+		this.name = player.getName();
 		loadAccount();
 	}
 	public void loadAccount() {
 		try {
 			if(nProtect.permissionPluginType != PermissionPluginType.UNKNOW) {
 				for(Grupo grupo : nProtect.grupos) {
-					if(nProtect.getPermissionAbstract().inGroup(name, grupo.getGrupo())) this.grupo = grupo;
+					if(nProtect.getPermissionAbstract().inGroup(player, grupo.getGrupo())) this.grupo = grupo;
 				}
 			} else {
 				Player target = Bukkit.getPlayer(name);
@@ -80,6 +82,9 @@ public class Conta {
 	}
 	public Grupo getGrupo() {
 		return grupo;
+	}
+	public Player getPlayer() {
+		return player;
 	}
 	public String getName() {
 		return name;

@@ -1,5 +1,7 @@
 package nickultracraft.protect.hooks;
 
+import org.bukkit.entity.Player;
+
 /**
  * A class PermissionAbstract.java da package (nickultracraft.protect.hooks) pertence ao NickUltracraft
  * Discord: NickUltracraft#4550
@@ -19,5 +21,5 @@ public abstract class PermissionAbstract {
 	public String getPluginName() {
 		return pluginName;
 	}
-	public abstract boolean inGroup(String player, String group);
+	public abstract boolean inGroup(Player player, String group);
 }

@@ -13,6 +13,7 @@ public enum PermissionPluginType {
 	
 	PERMISSIONSEX("PermissionsEx"),
 	LUCKPERMS("LuckPerms"),
+	GROUPMANAGER("GroupManager"),
 	UNKNOW("Unknow"),
 	OTHER("Other");
 	

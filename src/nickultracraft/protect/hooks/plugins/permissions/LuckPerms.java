@@ -1,5 +1,7 @@
 package nickultracraft.protect.hooks.plugins.permissions;
 
+import org.bukkit.entity.Player;
+
 import me.lucko.luckperms.api.User;
 import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.hooks.PermissionAbstract;
@@ -19,8 +21,8 @@ public class LuckPerms extends PermissionAbstract {
 		super("LuckPerms");
 	}
 	@Override
-	public boolean inGroup(String player, String group) {
-		User user = me.lucko.luckperms.LuckPerms.getApi().getUser(player);
+	public boolean inGroup(Player player, String group) {
+		User user = me.lucko.luckperms.LuckPerms.getApi().getUser(player.getName());
 		if(user == null) {
 			ConsoleLogger.error("LuckPerms: tried to check group for offline user " + player + " but it isn't loaded!");
 			return false;

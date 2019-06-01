@@ -21,6 +21,7 @@ import nickultracraft.protect.hooks.PermissionPluginType;
 import nickultracraft.protect.hooks.plugins.login.AuthMe;
 import nickultracraft.protect.hooks.plugins.login.MambaLogin;
 import nickultracraft.protect.hooks.plugins.login.nLogin;
+import nickultracraft.protect.hooks.plugins.permissions.GroupManager;
 import nickultracraft.protect.hooks.plugins.permissions.LuckPerms;
 import nickultracraft.protect.hooks.plugins.permissions.PermissionsEx;
 import nickultracraft.protect.listener.PlayerListeners;
@@ -110,6 +111,8 @@ public class nProtect extends JavaPlugin {
 			setPermissionAbstract(new PermissionsEx(), this, PermissionPluginType.PERMISSIONSEX);
 		} else if(pm.getPlugin("LuckPerms") != null) {
 			setPermissionAbstract(new LuckPerms(), this, PermissionPluginType.LUCKPERMS);
+		} else if(pm.getPlugin("GroupManager") != null) {
+			setPermissionAbstract(new GroupManager(), this, PermissionPluginType.GROUPMANAGER);
 		} else {
 			permissionPluginType = PermissionPluginType.UNKNOW;
 			ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
