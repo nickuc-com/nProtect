@@ -51,7 +51,11 @@ public class PlayerListeners implements Listener {
 			}.runTaskLater(nProtect.m, 20*Integer.valueOf(Settings.getInstance().getCachedValue("tempo_logar")));
 			p.setWalkSpeed(0);
 			p.setFlySpeed(0);
-			p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
+			if(account.getGrupo().getGrupo().equalsIgnoreCase("PERMISSION_GROUP")) {
+				p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat2"));
+			} else {
+				p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
+			}
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
 				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 			}

@@ -49,6 +49,7 @@ public class Messages {
 		add("logou_chat", "&aVocê logou como staffer com sucesso.");
 		add("logar_subtitle", "Se autentique usando /loginstaff <senha>");
 		add("logar_chat", "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha do grupo %grupo%");
+		add("logar_chat2", "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha para os grupos default.");
 	}
 	private void add(String id, String valor) {
 		if(!messagesMap.containsKey(id)) messagesMap.put(id, valor);

@@ -8,8 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.milkbowl.vault.permission.Permission;
 import nickultracraft.protect.api.Metrics;
 import nickultracraft.protect.api.UpdaterAPI;
 import nickultracraft.protect.api.ConsoleLogger;
@@ -24,6 +26,7 @@ import nickultracraft.protect.hooks.plugins.login.nLogin;
 import nickultracraft.protect.hooks.plugins.permissions.GroupManager;
 import nickultracraft.protect.hooks.plugins.permissions.LuckPerms;
 import nickultracraft.protect.hooks.plugins.permissions.PermissionsEx;
+import nickultracraft.protect.hooks.plugins.permissions.VaultPlugin;
 import nickultracraft.protect.listener.PlayerListeners;
 import nickultracraft.protect.objects.Arrays;
 import nickultracraft.protect.objects.Grupo;
@@ -48,6 +51,7 @@ public class nProtect extends JavaPlugin {
 	public static LoginAbstract loginAbstract;
 	public static PermissionAbstract permissionPlugin;
 	public static List<Grupo> grupos = new ArrayList<>();
+	public static Permission permissionPluginVault = null;
 
 	public void onEnable() {
 		m = this;
@@ -106,6 +110,13 @@ public class nProtect extends JavaPlugin {
 		}
 	}
 	private void setupPermissionPlugin() {
+		if(setupVault()) {
+			ConsoleLogger.warning("Plugin de permissoes foi detectado automaticamente pelo hook do Vault (" + permissionPluginVault.getName() + ")");
+			setPermissionAbstract(new VaultPlugin(), this, PermissionPluginType.VAULT_PLUGIN);
+			return;
+		} else {
+			ConsoleLogger.info("Nenhum plugin foi detectado pelo hook do Vault. Utilizando deteccao propria do plugin...");
+		}
 		PluginManager pm = Bukkit.getPluginManager();
 		if(pm.getPlugin("PermissionsEx") != null) {
 			setPermissionAbstract(new PermissionsEx(), this, PermissionPluginType.PERMISSIONSEX);
@@ -117,6 +128,17 @@ public class nProtect extends JavaPlugin {
 			permissionPluginType = PermissionPluginType.UNKNOW;
 			ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
 		}
+	}
+	private boolean setupVault() {
+		PluginManager pm = Bukkit.getPluginManager();
+		if(pm.getPlugin("Vault") != null) {
+			RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
+		    if (permissionProvider != null) {
+		    	permissionPluginVault = (Permission)permissionProvider.getProvider();
+		    }
+		    return permissionPluginVault != null;
+		}
+		return false;
 	}
 	private void manageConfig() {
 		if(!new File(getDataFolder(), "config.yml").exists()) saveResource("config.yml", false);
