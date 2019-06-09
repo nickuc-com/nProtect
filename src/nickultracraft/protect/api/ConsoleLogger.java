@@ -14,15 +14,18 @@ import org.bukkit.Bukkit;
 public class ConsoleLogger {
 	
 	public static void warning(String message) {
-		Bukkit.getLogger().warning("§6" + message);
+		send("§6" + message);
 	}
 	public static void error(String message) {
-		Bukkit.getLogger().warning("§c" + message);
+		send("§c" + message);
 	}
 	public static void invasion(String message) {
-		Bukkit.getLogger().warning("§c[Invasao] " + message);
+		send("§c[Invasao] " + message);
 	}
 	public static void info(String message) {
-		Bukkit.getLogger().info(message);
+		send(message);
+	}
+	public static void send(String message) {
+		Bukkit.getConsoleSender().sendMessage("[nProtect] " + message);
 	}
 }
