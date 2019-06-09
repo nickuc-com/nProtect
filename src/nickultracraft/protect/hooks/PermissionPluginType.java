@@ -14,6 +14,7 @@ public enum PermissionPluginType {
 	PERMISSIONSEX("PermissionsEx"),
 	LUCKPERMS("LuckPerms"),
 	GROUPMANAGER("GroupManager"),
+	VAULT_PLUGIN("VaultPermission"),
 	UNKNOW("Unknow"),
 	OTHER("Other");
 	

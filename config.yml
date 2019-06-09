@@ -44,3 +44,4 @@ Mensagens:
     logou_chat: "&aVocê logou como staffer com sucesso."
     logar_subtitle: "Se autentique usando /loginstaff <senha>"
     logar_chat: "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha do grupo %grupo%"
+    logar_chat2: "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha para os grupos default."
