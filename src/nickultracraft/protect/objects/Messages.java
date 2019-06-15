@@ -1,5 +1,18 @@
 package nickultracraft.protect.objects;
 
+/**
+ * Copyright 2019 NickUltracraft
+ *
+ * A class Messages.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * Discord: NickUltracraft#4550
+ * Mais informações: https://nickuc.tk 
+ *
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link para acesso da source original.
+ *
+ * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
+*/
+
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -7,15 +20,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import nickultracraft.protect.nProtect;
 import nickultracraft.protect.api.ConsoleLogger;
-
-/**
- * A class Messages.java da package (nickultracraft.protect.cache) pertence ao NickUltracraft
- * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
- *
- * É expressamente proibído alterar o nome do proprietário do código, sem
- * expressar e deixar claramente o link do download/source original.
-*/
 
 public class Messages {
 	

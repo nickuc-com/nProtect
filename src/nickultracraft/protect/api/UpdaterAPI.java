@@ -1,5 +1,18 @@
 package nickultracraft.protect.api;
 
+/**
+ * Copyright 2019 NickUltracraft
+ *
+ * A class UpdaterAPI.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * Discord: NickUltracraft#4550
+ * Mais informações: https://nickuc.tk 
+ *
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link para acesso da source original.
+ *
+ * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
+*/
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
