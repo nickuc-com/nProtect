@@ -1,5 +1,18 @@
 package nickultracraft.protect.listener;
 
+/**
+ * Copyright 2019 NickUltracraft
+ *
+ * A class PlayerListeners.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * Discord: NickUltracraft#4550
+ * Mais informações: https://nickuc.tk 
+ *
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link para acesso da source original.
+ *
+ * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
+*/
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,15 +36,6 @@ import nickultracraft.protect.objects.Conta;
 import nickultracraft.protect.objects.Messages;
 import nickultracraft.protect.objects.Settings;
 
-/**
- * A class PlayerListeners.java da package (nickultracraft.protect) pertence ao NickUltracraft
- * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
- *
- * É expressamente proibído alterar o nome do proprietário do código, sem
- * expressar e deixar claramente o link do download/source original.
-*/
-
 public class PlayerListeners implements Listener {
 	
 	@EventHandler
@@ -39,8 +43,8 @@ public class PlayerListeners implements Listener {
 		Player p = e.getPlayer();
 		Conta account = new Conta(p);
 		if(account.isStaffer()) {
-			if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getIP()))) {
-				account.forceLogin(p, true);
+			if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getAddress()))) {
+				account.getContaOperations().forceLogin(p, true);
 				return;
 			}
 			new BukkitRunnable() {
@@ -67,8 +71,8 @@ public class PlayerListeners implements Listener {
 		Conta account = new Conta(p);
 		if(account.isStaffer()) {
 			if(nProtect.loginPluginType == LoginPluginType.UNKNOW) {
-				if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getIP()))) {
-					account.forceLogin(p, true);
+				if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getAddress()))) {
+					account.getContaOperations().forceLogin(p, true);
 					return;
 				}
 				new BukkitRunnable() {

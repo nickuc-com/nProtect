@@ -1,12 +1,16 @@
 package nickultracraft.protect.hooks;
 
 /**
- * A class LoginPluginType.java da package (nickultracraft.protect.hooks) pertence ao NickUltracraft
+ * Copyright 2019 NickUltracraft
+ *
+ * A class PermissionPluginType.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
  * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.tk 
  *
  * É expressamente proibído alterar o nome do proprietário do código, sem
- * expressar e deixar claramente o link do download/source original.
+ * expressar e deixar claramente o link para acesso da source original.
+ *
+ * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
 */
 
 public enum PermissionPluginType {

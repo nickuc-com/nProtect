@@ -1,5 +1,18 @@
 package nickultracraft.protect.commands;
 
+/**
+ * Copyright 2019 NickUltracraft
+ *
+ * A class LoginStaff.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * Discord: NickUltracraft#4550
+ * Mais informações: https://nickuc.tk 
+ *
+ * É expressamente proibído alterar o nome do proprietário do código, sem
+ * expressar e deixar claramente o link para acesso da source original.
+ *
+ * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
+*/
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,15 +24,6 @@ import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
 import nickultracraft.protect.objects.Arrays;
 import nickultracraft.protect.objects.Conta;
 import nickultracraft.protect.objects.Messages;
-
-/**
- * A class LoginStaff.java da package (nickultracraft.protect.commands) pertence ao NickUltracraft
- * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
- *
- * É expressamente proibído alterar o nome do proprietário do código, sem
- * expressar e deixar claramente o link do download/source original.
-*/
 
 public final class LoginStaff implements CommandExecutor {
 
@@ -42,13 +46,13 @@ public final class LoginStaff implements CommandExecutor {
 				return true;
 			}
 			String password = args[0];
-			if(!account.getSenha().equals(password)) {
+			if(!account.getPassword().equals(password)) {
 				Bukkit.getPluginManager().callEvent(new PlayerWrongLoginStaffEvent(p.getName(), password));
 				ConsoleLogger.invasion("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.");
 				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
 				return true;
 			}
-			account.forceLogin(p);
+			account.getContaOperations().forceLogin(p);
 			return true;
 		}
 		sender.sendMessage("§cComando indisponível para console.");
