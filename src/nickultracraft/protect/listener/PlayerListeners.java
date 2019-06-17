@@ -93,6 +93,23 @@ public class PlayerListeners implements Listener {
 		}
 	}
 	@EventHandler
+	public void onComando(PlayerCommandPreprocessEvent e) {
+		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) { e.setCancelled(true); }
+		String message = e.getMessage().toLowerCase();
+		if(message.contains("nprotect") && message.contains("plugman") || (message.contains("nprotect") && message.contains("system"))) { 
+			e.setCancelled(true);
+			e.getPlayer().sendMessage("§cVocê não pode mexer em um plugin de segurança pelo jogo.");
+			return;
+		}
+		if(nProtect.loginPluginType != LoginPluginType.NLOGIN) {
+			if(message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("plugman") || (message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("system"))) { 
+				e.setCancelled(true);
+				e.getPlayer().sendMessage("§cVocê não pode mexer em um autenticação pelo jogo.");
+				return;
+			}
+		}
+	}
+	@EventHandler
 	public void onMexer(PlayerMoveEvent e) {
 		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.getPlayer().teleport(e.getFrom());
 	}
@@ -103,10 +120,6 @@ public class PlayerListeners implements Listener {
 	@EventHandler
 	public void onFalar(AsyncPlayerChatEvent e) {
 		if(!Arrays.getInstance().estaLogado(e.getPlayer())) e.setCancelled(true);
-	}
-	@EventHandler
-	public void onComando(PlayerCommandPreprocessEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) e.setCancelled(true);
 	}
 	@EventHandler
 	public void onInteragir(PlayerInteractEvent e) {
