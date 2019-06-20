@@ -94,7 +94,10 @@ public class PlayerListeners implements Listener {
 	}
 	@EventHandler
 	public void onComando(PlayerCommandPreprocessEvent e) {
-		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) { e.setCancelled(true); }
+		if(!Arrays.getInstance().estaLogado(e.getPlayer()) && (!commandMatches(e.getMessage().toLowerCase().split(" ")[0]))) { 
+			e.setCancelled(true); 
+			return;
+		}
 		String message = e.getMessage().toLowerCase();
 		if(message.contains("nprotect") && message.contains("plugman") || (message.contains("nprotect") && message.contains("system"))) { 
 			e.setCancelled(true);

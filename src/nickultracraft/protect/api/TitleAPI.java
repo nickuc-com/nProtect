@@ -31,6 +31,7 @@ public class TitleAPI {
 	private static Constructor<?> textTitleConstructor;
 	
 	public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
+		if(title == null || subtitle == null) return;
 		try {
 			Object chatTitle = a.invoke(null, "{\"text\":\"" + title + "\"}");
 			Object chatSubtitle = a.invoke(null,"{\"text\":\"" + subtitle + "\"}");
@@ -47,6 +48,7 @@ public class TitleAPI {
 	}
 	
 	public static void broadcastTitle(Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
+		if(title == null || subtitle == null) return;
 		try {
 			Object chatTitle = a.invoke(null, "{\"text\":\"" + title + "\"}");
 			Object chatSubtitle = a.invoke(null,"{\"text\":\"" + subtitle + "\"}");
