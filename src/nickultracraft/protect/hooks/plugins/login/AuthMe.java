@@ -1,5 +1,7 @@
 package nickultracraft.protect.hooks.plugins.login;
 
+import org.bukkit.Bukkit;
+
 /**
  * Copyright 2019 NickUltracraft
  *
@@ -16,14 +18,13 @@ package nickultracraft.protect.hooks.plugins.login;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import fr.xephi.authme.api.v3.AuthMeApi;
 import fr.xephi.authme.events.LoginEvent;
 import nickultracraft.protect.hooks.LoginAbstract;
 
 public class AuthMe extends LoginAbstract implements Listener {
 	
 	public AuthMe() {
-		super("AuthMe", AuthMeApi.getInstance().getPluginVersion());
+		super("AuthMe", Bukkit.getPluginManager().getPlugin("AuthMe").getDescription().getVersion());
 	}
 	@EventHandler
 	public void onLogar(LoginEvent e) {

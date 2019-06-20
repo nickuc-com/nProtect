@@ -1,5 +1,7 @@
 package nickultracraft.protect.listener;
 
+import org.bukkit.Bukkit;
+
 /**
  * Copyright 2019 NickUltracraft
  *
@@ -102,12 +104,14 @@ public class PlayerListeners implements Listener {
 		if(message.contains("nprotect") && message.contains("plugman") || (message.contains("nprotect") && message.contains("system"))) { 
 			e.setCancelled(true);
 			e.getPlayer().sendMessage("§cVocê não pode mexer em um plugin de segurança pelo jogo.");
+			Bukkit.getOnlinePlayers().forEach(player -> sendAlerta(player, e.getPlayer(), "nprotect"));
 			return;
 		}
 		if(nProtect.loginPluginType != LoginPluginType.NLOGIN) {
 			if(message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("plugman") || (message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("system"))) { 
 				e.setCancelled(true);
 				e.getPlayer().sendMessage("§cVocê não pode mexer em um autenticação pelo jogo.");
+				Bukkit.getOnlinePlayers().forEach(player -> sendAlerta(player, e.getPlayer(), nProtect.getLoginAbstract().getPluginName()));
 				return;
 			}
 		}
@@ -142,5 +146,12 @@ public class PlayerListeners implements Listener {
 	}
 	private boolean commandMatches(String commandToCheck) {
 		for(String stringCompare : Arrays.comandosPermitidos) { if(stringCompare.toLowerCase().equals(commandToCheck)) return true; } return false;
+	}
+	private void sendAlerta(Player online, Player sender, String plugin) {
+		if(online != sender && online.hasPermission("nprotect.admin")) {
+			online.sendMessage("");
+			online.sendMessage("  §7O jogador " + sender.getName() + " tentou desativar o " + ((plugin).equalsIgnoreCase("nprotect") ? "nProtect" : "plugin " + plugin));
+			online.sendMessage("  §7O nProtect evitou que esta tarefa fosse realizada.");
+		}
 	}
 }

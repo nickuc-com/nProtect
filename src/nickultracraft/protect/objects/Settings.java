@@ -35,6 +35,11 @@ public class Settings {
 			if(nProtect.m.getConfig().isSet("Config.TempoLogar")) add("tempo_logar", loadFromConfig("TempoLogar"));
 			if(nProtect.m.getConfig().isSet("Config.SenhaDefault")) add("senha_default_sem_cargo", loadFromConfig("SenhaDefault"));
 			addMissingSettings();
+			
+			for(String setting : settingsMap.keySet()) {
+				ConsoleLogger.debug("Loaded '" + setting + "' -> '" + settingsMap.get(setting) + "'");
+			}
+			
 		} catch (Exception e) {
 			ConsoleLogger.error("Falha ao carregar as configuracoes. Usando valores default.");
 			addMissingSettings();
