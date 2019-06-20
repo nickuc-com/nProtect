@@ -26,6 +26,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.permission.Permission;
 import nickultracraft.protect.api.Metrics;
+import nickultracraft.protect.api.ReflectionUtils;
+import nickultracraft.protect.api.TitleAPI;
 import nickultracraft.protect.api.UpdaterAPI;
 import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.commands.LoginStaff;
@@ -70,6 +72,8 @@ public class nProtect extends JavaPlugin {
 		Arrays.getInstance().loadComandos();
 		Messages.getInstance().loadMessages();
 		Settings.getInstance().loadSettings();
+		ReflectionUtils.loadUtils();
+		TitleAPI.load();
 		registerListeners();
 		registerCommands();
 		setupPermissionPlugin();

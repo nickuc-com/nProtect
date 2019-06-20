@@ -17,6 +17,8 @@ import org.bukkit.Bukkit;
 
 public class ConsoleLogger {
 	
+	public static final boolean DEBUG = true;
+	
 	public static void warning(String message) {
 		send("§6" + message);
 	}
@@ -28,6 +30,9 @@ public class ConsoleLogger {
 	}
 	public static void info(String message) {
 		send(message);
+	}
+	public static void debug(String message) {
+		if(DEBUG) send("§3[DEBUG] " + message);
 	}
 	public static void send(String message) {
 		Bukkit.getConsoleSender().sendMessage("[nProtect] " + message);

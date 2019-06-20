@@ -32,9 +32,14 @@ public class Messages {
 		messagesMap.clear();
 		try {
 			for(String messageToAdd : nProtect.m.getConfig().getConfigurationSection("Mensagens").getKeys(false)) {
-				if(nProtect.m.getConfig().isSet("Mensagens." + messageToAdd)) add(messageToAdd, loadFromConfig(messageToAdd));
+				if(nProtect.m.getConfig().isSet("Mensagens." + messageToAdd)) { add(messageToAdd, loadFromConfig(messageToAdd)); }
 			}
 			addMissingMessages();
+			
+			for(String messageMap : messagesMap.keySet()) {
+				ConsoleLogger.debug("Loaded '" + messageMap + "' -> '" + messagesMap.get(messageMap) + "'");
+			}
+			
 		} catch (Exception e) {
 			ConsoleLogger.error("Falha ao carregar as mensagens. Usando valores default.");
 			addMissingMessages();
@@ -62,6 +67,7 @@ public class Messages {
 		FileConfiguration config = nProtect.m.getConfig(); return config.getString("Mensagens." + path);
 	}
 	public String getCachedMessage(String selectValue) {
+		if(!messagesMap.containsKey(selectValue)) return "§cUnknown message";
 		return ChatColor.translateAlternateColorCodes('&', messagesMap.get(selectValue));
 	}
 

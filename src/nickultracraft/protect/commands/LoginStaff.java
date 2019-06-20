@@ -52,6 +52,7 @@ public final class LoginStaff implements CommandExecutor {
 				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
 				return true;
 			}
+			ConsoleLogger.debug("Login efetuado para " + p.getName() + " para " + account.toString());
 			account.getContaOperations().forceLogin(p);
 			return true;
 		}

@@ -1,5 +1,7 @@
 package nickultracraft.protect.hooks.plugins.login;
 
+import org.bukkit.Bukkit;
+
 /**
  * Copyright 2019 NickUltracraft
  *
@@ -23,7 +25,7 @@ import rush.login.events.PlayerAuthRegisterEvent;
 public class MambaLogin extends LoginAbstract implements Listener {
 	
 	public MambaLogin() {
-		super("MambaLogin", "Unknow");
+		super("MambaLogin", Bukkit.getPluginManager().getPlugin("MambaLogin").getDescription().getVersion());
 	}
 	@EventHandler
 	public void onLogar(PlayerAuthLoginEvent e) {

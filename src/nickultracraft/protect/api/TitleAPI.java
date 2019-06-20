@@ -30,7 +30,17 @@ public class TitleAPI {
 	private static Constructor<?> timeTitleConstructor;
 	private static Constructor<?> textTitleConstructor;
 	
+	@SuppressWarnings("deprecation")
 	public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
+		if(title == null || subtitle == null) {
+			return;
+		}
+		
+		// Transforma para segundos
+		stay = stay*20;
+		fadeOut = fadeOut*20;
+		fadeIn = fadeIn*20;
+		
 		try {
 			Object chatTitle = a.invoke(null, "{\"text\":\"" + title + "\"}");
 			Object chatSubtitle = a.invoke(null,"{\"text\":\"" + subtitle + "\"}");
@@ -42,11 +52,15 @@ public class TitleAPI {
 			ReflectionUtils.sendPacket(player, titlePacket);
 			ReflectionUtils.sendPacket(player, subtitlePacket);
 		} catch (Throwable e) {
-			e.printStackTrace();
+			try {
+				player.sendTitle(title, subtitle);
+			} catch (Exception e2) {}
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void broadcastTitle(Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
+		if(title == null || subtitle == null) return;
 		try {
 			Object chatTitle = a.invoke(null, "{\"text\":\"" + title + "\"}");
 			Object chatSubtitle = a.invoke(null,"{\"text\":\"" + subtitle + "\"}");
@@ -60,7 +74,9 @@ public class TitleAPI {
 				ReflectionUtils.sendPacket(player, subtitlePacket);
 			}
 		} catch (Throwable e) {
-			e.printStackTrace();
+			try {
+				Bukkit.getOnlinePlayers().forEach(online -> online.sendTitle(title, subtitle));
+			} catch (Exception e2) {}
 		}
 	}
 		
