@@ -113,7 +113,7 @@ public class nProtect extends JavaPlugin {
 				setLoginAbstract(new MambaLogin(), new MambaLogin(), this, LoginPluginType.MAMBALOGIN);
 			} catch (Exception e) {}
 		} else {
-			loginPluginType = LoginPluginType.UNKNOW;
+			loginPluginType = LoginPluginType.UNKNOWN;
 			ConsoleLogger.warning("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect");
 		}
 	}

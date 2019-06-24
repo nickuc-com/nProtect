@@ -63,7 +63,7 @@ public class PlayerListeners implements Listener {
 				p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
 			}
 			if(Settings.getInstance().getCachedSetting("usar_title")) {
-				TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+				TitleAPI.sendTitle(p, 0, 999, 999, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 			}
 		}
 	}
@@ -72,7 +72,7 @@ public class PlayerListeners implements Listener {
 		Player p = e.getPlayer();
 		Conta account = new Conta(p);
 		if(account.isStaffer()) {
-			if(nProtect.loginPluginType == LoginPluginType.UNKNOW) {
+			if(nProtect.loginPluginType == LoginPluginType.UNKNOWN) {
 				if(Settings.getInstance().getCachedSetting("auto_login") && (p.getAddress().getHostString().equals(account.getAddress()))) {
 					account.getContaOperations().forceLogin(p, true);
 					return;
@@ -87,7 +87,7 @@ public class PlayerListeners implements Listener {
 				p.setFlySpeed(0);
 				p.sendMessage(Messages.getInstance().getCachedMessage("logar_chat").replace("%grupo%", account.getGrupo().getGrupo()));
 				if(Settings.getInstance().getCachedSetting("usar_title")) {
-					TitleAPI.sendTitle(p, 0, 30, 30, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
+					TitleAPI.sendTitle(p, 0, 999, 999, Messages.getInstance().getCachedMessage("loginstaff_title"), Messages.getInstance().getCachedMessage("logar_subtitle"));
 				}
 			}
 		} else {
@@ -107,7 +107,7 @@ public class PlayerListeners implements Listener {
 			Bukkit.getOnlinePlayers().forEach(player -> sendAlerta(player, e.getPlayer(), "nprotect"));
 			return;
 		}
-		if(nProtect.loginPluginType != LoginPluginType.NLOGIN) {
+		if(nProtect.loginPluginType != LoginPluginType.UNKNOWN && nProtect.loginPluginType != LoginPluginType.NLOGIN) {
 			if(message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("plugman") || (message.contains(nProtect.getLoginAbstract().getPluginName().toLowerCase()) && message.contains("system"))) { 
 				e.setCancelled(true);
 				e.getPlayer().sendMessage("§cVocê não pode mexer em um autenticação pelo jogo.");

@@ -18,7 +18,7 @@ public enum LoginPluginType {
 	NLOGIN("nLogin"),
 	AUTHME("AuthMe"),
 	MAMBALOGIN("Mamba Login"),
-	UNKNOW("Unknow"),
+	UNKNOWN("Unknown"),
 	OTHER("Other");
 	
 	public String name;
