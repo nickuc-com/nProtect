@@ -1,17 +1,14 @@
-package nickultracraft.protect.api;
-
 /**
  * Copyright 2019 NickUltracraft
  *
- * A class UpdaterAPI.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * A class UpdaterAPI.java é uma api pública usada para atualizações de plugins, criada originalmente por NickUltracraft
  * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.tk 
  *
- * É expressamente proibído alterar o nome do proprietário do código, sem
- * expressar e deixar claramente o link para acesso da source original.
- *
- * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
+ * Caso for utilizar esta api em seu plugin, não altere este aviso em qualquer distribuição.
 */
+
+package nickultracraft.protect.api;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,23 +21,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.NullArgumentException;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import nickultracraft.updater.api.UpdaterManager;
 
-/**
- * A class UpdaterAPI.java é uma api pública usada para atualizações de plugins.
- * Carregue esta class em static na sua main, para evitar carregar ela constantemente.
- * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
-*/
-
 public class UpdaterAPI {
-		
+
+	/*
+	 * Não altere os campos abaixo
+	 */
+	private static final String API_VERSION = "1.7";
+	
+	private boolean DEBUG = false;
 	private Plugin plugin;
 	private File pluginFile;
 	private boolean updateAvailable;
@@ -51,48 +47,95 @@ public class UpdaterAPI {
 	private String prefix;
 	private String updaterLink;
 	private String pluginCheck;
-	
-	private boolean DEBUG = false;
-	private String API_VERSION = "1.6";
-	
-	public UpdaterAPI(Plugin plugin, String pluginName) {
-		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }
-		this.plugin = plugin;
-		this.pluginName = pluginName;
-		this.logger = plugin.getLogger();
-		this.prefix = "[" + pluginName.toUpperCase() + " UPDATER] ";
-		this.pluginCheck = "https://www.nickuc.tk/plugin/info?" + pluginName;
-		this.updaterLink = "https://www.nickuc.tk/plugin/download?id=7";
 		
+	public boolean setupURL() {
+		/*
+		 * A página de checagem de versão deve seguir este padrão:
+		 * VERSÃO-LINK_DOWNLOAD
+		 * 
+		 * Exemplo:
+		 * 1.0-https://www.nickuc.tk/downloads/jars/examplePlugin/examplePlugin.jar
+		 */
+		
+		/*
+		 * Link para verificar a versão do seu plugin. Siga o padrão acima.
+		 */
+		setPluginCheckLink("https://www.nickuc.tk/plugin/info?nProtect");
+		
+		/*
+		 * Link para fazer o download do seu plugin. O link de download deve ser direto, sem apresentar nenhum sistema de pular anúncio, recaptcha, etc...
+		 */
 		setDownloadLink("https://www.nickuc.tk/plugin/download?id=2");
 		
-		for(File file : plugin.getDataFolder().getParentFile().listFiles()) {
-			if(file.getName().contains(plugin.getName()) && (file.getName().endsWith(".jar"))) {
-				this.pluginFile = file;
-			}
+		/*
+		 * Não altere o campo abaixo. Ele é utilizado para verificar se você
+		 * trocou os campos do url para atualizar seu plugin.
+		 */
+		return !getPluginCheckLink().equals("{URL_CHECK_VERSION}") && !getDownloadLink().equals("{URL_DOWNLOAD_DIRETO}");
+	}
+	
+	
+	public UpdaterAPI(Plugin plugin, String pluginName) throws UpdaterException {
+		if(plugin == null) { 
+			new UpdaterException("Você não pode usar o auto updater para valores de plugin nulos."); 
+			return; 
 		}
-		if(pluginFile == null) this.pluginFile = new File(plugin.getDataFolder().getParentFile(), "nProtect.jar");
+		/*
+		 * Dados dos plugins que serão atualizados.
+		 * Não altere se você não sabe o que está fazendo.
+		 */
+		this.plugin = plugin;
+		this.pluginName = pluginName;
+		
+		/*
+		 * Logger que irá mandar mensagens das operações.
+		 * Não altere se você não sabe o que está fazendo.
+		 */
+		this.logger = plugin.getLogger();
+		
+		/*
+		 * Prefix que será enviado para operações feitas pela api do plugin.
+		 */
+		this.prefix = "[" + pluginName.toUpperCase() + " UPDATER] ";
+		
+		/*
+		 * Link para fazer o download do plugin atualizador.
+		 * Não altere se você não sabe o que está fazendo.
+		 */
+		this.updaterLink = "https://www.nickuc.tk/plugin/download?id=7";
+			
+		/*
+		 * Verificação para ver se foi possível encontrar o arquivo do plugin.
+		 */
+		if(!searchPluginFile()) {
+			new UpdaterException("Ops, não foi possível encontrar o nome do arquivo do atualizador do plugin " + pluginName + ". Certifique que você não alterou o nome do jar.");
+		}
+		
+		/*
+		 * Verificação para ver se as urls para verificação do plugin foram alteradas.
+		 */
+		if(!setupURL()) {
+			new UpdaterException("Ops, parece que você ainda não configurou os links para o auto updater. Por favor, altere os campos {URL_DOWNLOAD_DIRETO} & {URL_CHECK_VERSION} da classe UpdaterAPI.java");
+		}
 	}
 	
 	/* 
-	 * Sugestão de execuções para verificar se existe um update.
-	 * Você pode apenas carregar este objeto no onEnable() do seu plugin.
+	 * Easy config: Você pode apenas carregar este objeto no onEnable() para verificar updates do seu plugin.
 	 */
-	public void defaultEnableExecute() {
-		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }
-		new BukkitRunnable() {
-			
+	public void defaultEnableExecute() throws UpdaterException {
+		if(plugin == null) { 
+			new UpdaterException("Você não pode usar o auto updater para valores de plugin nulos."); 
+			return; 
+		}
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 			@Override
 			public void run() {
-				/* Atualiza e verifica os dados da nova versao */
 				try {
-					checkUpdate();
+					checkUpdate("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
 				} catch (Throwable e) {
 					e.printStackTrace();
 					logger.warning("Nao foi possivel verificar por novas atualizacoes.");
 				}
-				
-				/* Baixa a nova jar da nova versao */
 				try {
 					downloadUpdate();
 				} catch (Throwable e) {
@@ -100,11 +143,13 @@ public class UpdaterAPI {
 					logger.warning("Nao foi possivel realizar o download da atualizacao.");
 				}
 			}
-		}.runTaskLaterAsynchronously(plugin, 20*30);
+		});
 	}
-	public void defaultDisableExecute() {
-		if(plugin == null) { new NullArgumentException("Voce nao pode deixar o valor do plugin nulo."); return; }		
-		/* Realiza a instalacao do arquivo baixado */
+	public void defaultDisableExecute() throws UpdaterException {
+		if(plugin == null) { 
+			new UpdaterException("Você não pode usar o auto updater para valores de plugin nulos."); 
+			return; 
+		}
 		try {
 			installUpdate();
 		} catch (Throwable e) {
@@ -113,6 +158,13 @@ public class UpdaterAPI {
 		}
 	}
 	
+	public boolean searchPluginFile() {
+		Arrays.asList(plugin.getDataFolder().getParentFile().listFiles()).stream().filter(file -> file.getName().toLowerCase().contains(plugin.getName().toLowerCase()) && file.getName().toLowerCase().endsWith(".jar")).forEach(file -> pluginFile = file);
+		if(pluginFile == null) {
+			this.pluginFile = new File(plugin.getDataFolder().getParentFile(), pluginName + ".jar");
+		}
+		return pluginFile != null;
+	}
 	public Plugin getPlugin() {
 		return plugin;
 	}
@@ -136,6 +188,12 @@ public class UpdaterAPI {
 	}
 	public void setDownloadLink(String downloadUrl) {
 		this.pluginDownloadURL = downloadUrl;
+	}
+	public String getPluginCheckLink() {
+		return pluginCheck;
+	}
+	public void setPluginCheckLink(String pluginCheck) {
+		this.pluginCheck = pluginCheck;
 	}
 	public String getPrefix() {
 		return prefix;
@@ -162,21 +220,58 @@ public class UpdaterAPI {
 		return pluginFile;
 	}
 	public void installUpdate() throws Throwable {
-		if(!isUpdateAvailable()) return;
-		downloadUpdater();
+		if(!isUpdateAvailable()) {
+			return;
+		}
+		
+		/*
+		 * Instala o auto updater se não estiver instalado.
+		 */
+		installAutoUpdater();
+		
+		/*
+		 * Envia para o usuário que o processo de atualização está sendo iniciado.
+		 */
 		logger.info(prefix + "Iniciando instalacao da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + " -> " + getLastVersion() + "...");
-		new UpdaterManager(pluginName).update(getPluginFile().getName().substring(0, getPluginFile().getName().length()-4));
+		
+		/*
+		 * Realiza a substituição do arquivo do antigo update para o novo.
+		 */
+		new UpdaterManager(pluginName).update(getPluginFile().getName().substring(getPluginFile().getName().length(), getPluginFile().getName().length()-4));
 	}
 	public void downloadUpdate() throws Throwable {
-		if(!isUpdateAvailable()) return;
-		downloadUpdater();
+		if(!isUpdateAvailable()) {
+			return;
+		}
+		
+		/*
+		 * Instala o auto updater se não estiver instalado.
+		 */
+		installAutoUpdater();
+		
+		/*
+		 * Envia para o usuário que o processo de download da atualização está sendo iniciado.
+		 */
 		logger.info(prefix + "Iniciando download da atualizacao do plugin " + pluginName + " v" + plugin.getDescription().getVersion() + " -> " + getLastVersion() + "...");
-		new UpdaterManager(pluginName).baixar(getDownloadLink());
+		
+		/*
+		 * Realiza o download arquivo do novo update e salva em um cache.
+		 */
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				new UpdaterManager(pluginName).baixar(getDownloadLink());
+			}
+		}).start();
 	}
-	public void checkUpdate() throws Throwable {
+	public void checkUpdate(String userAgent) throws Throwable {
+		/*
+		 * Verifica se um novo update está disponível
+		 */
 		InputStream is;
 		URLConnection openConnection = new URL(pluginCheck).openConnection();
-		openConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+		openConnection.addRequestProperty("User-Agent", userAgent);
 		is = openConnection.getInputStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder();
@@ -184,19 +279,30 @@ public class UpdaterAPI {
         while ((cp = rd.read()) != -1) {
         	sb.append((char) cp);
         }
+        
+        /*
+         * Pega os dados atualizados para 
+         */
 		this.pluginLastVersion = sb.toString().split("-")[0];
 		this.pluginDownloadURL = sb.toString().split("-")[1];
+		
+		/*
+		 * Se um novo update estiver disponível, o valor será salvado.
+		 */
 		this.updateAvailable = !pluginLastVersion.equals(plugin.getDescription().getVersion());
 	}
- 	public void downloadUpdater() throws Throwable {
+ 	public void installAutoUpdater() throws Throwable {
+ 		/*
+ 		 * Instala o auto updater automaticamente para fazer o gerenciamento de updates.
+ 		 */
 		if(plugin.getServer().getPluginManager().getPlugin("NickUC-Updater") == null) {
 			logger.info(prefix + "Plugin de atualizacao nao foi encontrado. Realizando download automaticamente...");
 			URL url = new URL(updaterLink);
 	        HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 	        httpConnection.setRequestProperty("User-Agent", pluginName + "ResourceUpdater");
 	        long completeFileSize = httpConnection.getContentLength();
-	        if(completeFileSize == -1) {
-	        	logger.warning("Ops, parece que o arquivo de download do updater esta corrompido. Download cancelado."); 
+	        if(completeFileSize <= -1) {
+	        	logger.warning(prefix + "Ops, parece que o arquivo de download do updater esta corrompido. Download cancelado."); 
 	        	return;
 	        }
 	        if(DEBUG) logger.info("Conexao estabelecida com sucesso. Tamanho do arquivo é de " + completeFileSize);
@@ -210,12 +316,21 @@ public class UpdaterAPI {
 	        while ((x = in.read(data, 0, 1024)) >= 0) {
 	            bout.write(data, 0, x);
 	        }
-	        if(DEBUG) logger.info("Fechando conexoes com o site...");
+	        if(DEBUG) logger.info(prefix + "Fechando conexoes com o site...");
 	        bout.close();
 			in.close();
 				
 			plugin.getServer().getPluginManager().loadPlugin(updaterJar);
 			plugin.getServer().getPluginManager().enablePlugin(plugin.getServer().getPluginManager().getPlugin("NickUC-Updater"));
+		}
+	}
+ 	
+ 	public class UpdaterException extends Exception {
+
+		private static final long serialVersionUID = -3001805382277989376L;
+		
+		public UpdaterException(String message) {
+			super(message);
 		}
 	}
 }
