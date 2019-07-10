@@ -29,6 +29,7 @@ import nickultracraft.protect.api.Metrics;
 import nickultracraft.protect.api.ReflectionUtils;
 import nickultracraft.protect.api.TitleAPI;
 import nickultracraft.protect.api.UpdaterAPI;
+import nickultracraft.protect.api.UpdaterAPI.UpdaterException;
 import nickultracraft.protect.api.ConsoleLogger;
 import nickultracraft.protect.commands.LoginStaff;
 import nickultracraft.protect.hooks.LoginAbstract;
@@ -63,11 +64,17 @@ public class nProtect extends JavaPlugin {
 		m = this;
 		manageConfig();
 		new Metrics(this);
-		updaterAPI = new UpdaterAPI(this, "nProtect");
-		updaterAPI.defaultEnableExecute();
-		if(updaterAPI.isUpdateAvailable()) {
-			ConsoleLogger.warning(" Uma nova versao do nProtect esta disponivel " + getDescription().getVersion() + " -> " + updaterAPI.getLastVersion());
-			ConsoleLogger.info("");
+		
+		try {
+			updaterAPI = new UpdaterAPI(this, "nProtect");
+			updaterAPI.defaultEnableExecute();
+			
+			if(updaterAPI.isUpdateAvailable()) {
+				ConsoleLogger.warning(" Uma nova versao do nProtect esta disponivel " + getDescription().getVersion() + " -> " + updaterAPI.getLastVersion());
+				ConsoleLogger.info("");
+			}
+		} catch (UpdaterException e) {
+			e.printStackTrace();
 		}
 		Arrays.getInstance().loadComandos();
 		Messages.getInstance().loadMessages();
@@ -81,7 +88,11 @@ public class nProtect extends JavaPlugin {
 		ConsoleLogger.info("Inicializacao completa com sucesso");
 	}
 	public void onDisable() {
-		if(updaterAPI != null) updaterAPI.defaultDisableExecute();
+		try {
+			if(updaterAPI != null) updaterAPI.defaultDisableExecute();
+		} catch (UpdaterException e) {
+			e.printStackTrace();
+		}
 	}
 	public static void setLoginAbstract(LoginAbstract loginAbstract, Listener listener, Plugin plugin, LoginPluginType loginPluginType) {
 		nProtect.loginAbstract = loginAbstract;
