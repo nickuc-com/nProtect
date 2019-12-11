@@ -13,51 +13,58 @@ package nickultracraft.protect.commands;
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
 */
 
-import org.bukkit.Bukkit;
+import nickultracraft.ncore.minecraft.spigot.logging.ConsoleLogger;
+import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
+import nickultracraft.protect.objects.Account;
+import nickultracraft.protect.objects.Arrays;
+import nickultracraft.protect.objects.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import nickultracraft.protect.api.ConsoleLogger;
-import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
-import nickultracraft.protect.objects.Arrays;
-import nickultracraft.protect.objects.Conta;
-import nickultracraft.protect.objects.Messages;
+import java.util.List;
 
-public final class LoginStaff implements CommandExecutor {
+public final class LoginStaff implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lb, String[] args) {
 		if(sender instanceof Player) {
 			Player p = (Player)sender;
-			int lenght = args.length;
-			if(lenght != 1) {
-				p.sendMessage(Messages.getInstance().getCachedMessage("argumentos_invalidos"));
+			if(args.length != 1) {
+				p.sendMessage(Messages.getCachedMessage("argumentos_invalidos"));
 				return true;
 			} 
-			Conta account = new Conta(p);
+			Account account = new Account(p);
 			if(!account.isStaffer()) {
-				p.sendMessage(Messages.getInstance().getCachedMessage("nao_staffer"));
+				p.sendMessage(Messages.getCachedMessage("nao_staffer"));
 				return true;
 			}
-			if(Arrays.getInstance().estaLogado(p)) {
-				p.sendMessage(Messages.getInstance().getCachedMessage("ja_autenticado"));
+			if(Arrays.estaLogado(p)) {
+				p.sendMessage(Messages.getCachedMessage("ja_autenticado"));
 				return true;
 			}
 			String password = args[0];
 			if(!account.getPassword().equals(password)) {
-				Bukkit.getPluginManager().callEvent(new PlayerWrongLoginStaffEvent(p.getName(), password));
-				ConsoleLogger.invasion("O ip " + p.getAddress().getHostString() + " tentou entrar na conta de " + p.getName() + " e errou o login staff.");
-				p.kickPlayer(Messages.getInstance().getCachedMessage("senha_incorreta"));
+				PlayerWrongLoginStaffEvent wrongEvent = new PlayerWrongLoginStaffEvent(p.getName(), password).call();
+				ConsoleLogger.warning("O jogador " + p.getName() + " " + p.getAddress().getHostString() + " inseriu uma senha incorreta para o loginstaff.");
+				if(wrongEvent.isCancelled()) {
+					return true;
+				}
+				p.kickPlayer(Messages.getCachedMessage("senha_incorreta"));
 				return true;
 			}
-			ConsoleLogger.debug("Login efetuado para " + p.getName() + " para " + account.toString());
+			ConsoleLogger.debug("Login efetuado para " + p.getName() + " para " + account.toString() + ".");
 			account.getContaOperations().forceLogin(p);
 			return true;
 		}
-		sender.sendMessage("§cComando indisponível para console.");
+		sender.sendMessage("§cDesculpe, mas este comando está indisponível para o console.");
 		return false;
 	}
 
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return null;
+    }
 }

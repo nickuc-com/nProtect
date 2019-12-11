@@ -1,8 +1,9 @@
 name: nProtect
 author: NickUltracraft
-version: 2.4
+version: 2.5
 main: nickultracraft.protect.nProtect
-website: https://nickuc.tk
+website: https://nickuc.com
+softdepend: [LuckPerms, PermissionsEx, GroupManager, nLogin, AuthMe, Login, Vault]
 commands:
     loginstaff:
         aliases: [/ls]
