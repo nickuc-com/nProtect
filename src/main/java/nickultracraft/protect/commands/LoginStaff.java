@@ -1,17 +1,18 @@
-package nickultracraft.protect.commands;
-
 /**
- * Copyright 2019 NickUltracraft
- *
- * A class LoginStaff.java pertence ao projeto (PLUGIN - nProtectV2) pertencente à NickUltracraft
+ * Copyright NickUC
+ * -
+ * Esta class pertence ao projeto de NickUC
  * Discord: NickUltracraft#4550
- * Mais informações: https://nickuc.tk 
- *
- * É expressamente proibído alterar o nome do proprietário do código, sem
+ * Mais informações: https://nickuc.com
+ * -
+ * É expressamente proibido alterar o nome do proprietário do código, sem
  * expressar e deixar claramente o link para acesso da source original.
- *
+ * -
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
-*/
+ */
+
+
+package nickultracraft.protect.commands;
 
 import nickultracraft.ncore.minecraft.spigot.logging.ConsoleLogger;
 import nickultracraft.protect.events.PlayerWrongLoginStaffEvent;
