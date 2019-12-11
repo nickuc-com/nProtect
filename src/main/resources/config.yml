@@ -1,6 +1,7 @@
 # Configuração do nProtectV2 - Código totalmente refeito, agora muito mais rápido.
 # Precisa de suporte? Contate-me via discord: NickUltracraft#4550
 Config:
+    debug-mode: false
     # Configure aqui os grupos para se logarem como staffer.
     # O nome do grupo deve estar identico no seu plugin de permissões [PermissionsEx, LuckPerms ou GroupManager]
     # Coloque entre aspas a senha desejada para cada cargo..

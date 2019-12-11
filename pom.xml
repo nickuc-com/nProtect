@@ -6,10 +6,26 @@
 
     <groupId>nickultracraft.protect</groupId>
     <artifactId>nProtect</artifactId>
-    <version>2.4</version>
+    <version>2.5</version>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -20,6 +36,22 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources/nickultracraft/protect/libs</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>nickultracraft.ncore</groupId>
+            <artifactId>nCore</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
