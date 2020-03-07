@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nickultracraft.protect</groupId>
+    <groupId>com.nickuc.protect</groupId>
+    <packaging>jar</packaging>
     <artifactId>nProtect</artifactId>
-    <version>2.5</version>
+    <version>3.0</version>
 
     <build>
         <plugins>
@@ -16,6 +16,16 @@
                 <version>3.2.1</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.nickuc.ncore.api.internal.License</pattern>
+                            <shadedPattern>com.nickuc.protect.ncore.license.License</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.nickuc.ncore.api</pattern>
+                            <shadedPattern>com.nickuc.protect.ncore</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -36,22 +46,21 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources/nickultracraft/protect/libs</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
     <dependencies>
-
         <dependency>
-            <groupId>nickultracraft.ncore</groupId>
+            <groupId>com.nickuc.ncore</groupId>
             <artifactId>nCore</artifactId>
-            <version>2.0</version>
+            <version>1.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

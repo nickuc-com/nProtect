@@ -11,39 +11,35 @@
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
  */
 
-package nickultracraft.protect;
+package com.nickuc.protect;
 
+import com.nickuc.ncore.api.config.nConfig;
+import com.nickuc.ncore.api.logger.ConsoleLogger;
+import com.nickuc.ncore.api.minecraft.spigot.AbstractPlugin;
+import com.nickuc.protect.commands.LoginStaff;
+import com.nickuc.protect.hook.LoginProvider;
+import com.nickuc.protect.hook.PermissionProvider;
+import com.nickuc.protect.hook.plugins.login.AuthMe;
+import com.nickuc.protect.hook.plugins.login.LoginEnum;
+import com.nickuc.protect.hook.plugins.login.MambaLogin;
+import com.nickuc.protect.hook.plugins.login.nLogin;
+import com.nickuc.protect.hook.plugins.permissions.*;
+import com.nickuc.protect.listener.PlayerListeners;
+import com.nickuc.protect.management.Messages;
+import com.nickuc.protect.management.Settings;
+import com.nickuc.protect.objects.Group;
 import net.milkbowl.vault.permission.Permission;
-import nickultracraft.ncore.minecraft.spigot.SpigotCore;
-import nickultracraft.ncore.minecraft.spigot.logging.ConsoleLogger;
-import nickultracraft.ncore.minecraft.spigot.management.CommandHandler;
-import nickultracraft.ncore.minecraft.spigot.metrics.Metrics;
-import nickultracraft.protect.commands.LoginStaff;
-import nickultracraft.protect.hook.LoginProvider;
-import nickultracraft.protect.hook.PermissionProvider;
-import nickultracraft.protect.hook.plugins.login.AuthMe;
-import nickultracraft.protect.hook.plugins.login.LoginEnum;
-import nickultracraft.protect.hook.plugins.login.MambaLogin;
-import nickultracraft.protect.hook.plugins.login.nLogin;
-import nickultracraft.protect.hook.plugins.permissions.*;
-import nickultracraft.protect.listener.PlayerListeners;
-import nickultracraft.protect.objects.Arrays;
-import nickultracraft.protect.objects.Group;
-import nickultracraft.protect.objects.Messages;
-import nickultracraft.protect.objects.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class nProtect extends JavaPlugin {
+public class nProtect extends AbstractPlugin {
 	
-	public static nProtect instance;
+	public static nProtect nprotect;
 	public static LoginEnum loginType;
 	public static PermissionEnum permissionType;
 	public static LoginProvider loginProvider;
@@ -51,45 +47,59 @@ public class nProtect extends JavaPlugin {
 	public static List<Group> grupos = new ArrayList<>();
 	public static Permission permissionPluginVault = null;
 
-	public void onEnable() {
-		instance = this;
+	public nProtect() {
+		super("nProtect");
+	}
+
+	@Override
+	public void enablePlugin() {
+		nprotect = this;
 		manageConfig();
-		new Metrics(this);
-		try {
-			new SpigotCore("nProtect", this);
-			ConsoleLogger.warning(SpigotCore.core.getNplugin().getSecureKeyType().getSecureKeyMessage());
-			if(!SpigotCore.core.getNplugin().getPluginRequestedData().isUpdateAvailable()) {
-				ConsoleLogger.warning(" Uma nova versao do nProtect esta disponivel " + getDescription().getVersion() + " -> " + SpigotCore.core.getNplugin().getPluginRequestedData().getLatestVersion());
-				ConsoleLogger.info("");
+
+		String c = "§b";
+		ConsoleLogger.info(c+"         ___            _            _   ");
+		ConsoleLogger.info(c+" _ __   / _ \\_ __ ___ | |_ ___  ___| |_ ");
+		ConsoleLogger.info(c+"| '_ \\ / /_)/ '__/ _ \\| __/ _ \\/ __| __|");
+		ConsoleLogger.info(c+"| | | / ___/| | | (_) | ||  __/ (__| |_ ");
+		ConsoleLogger.info(c+"|_| |_\\/    |_|  \\___/ \\__\\___|\\___|\\__|");
+		ConsoleLogger.info(c+"                                        ");
+		ConsoleLogger.info(c+" By: www.nickuc.com - V " + getDescription().getVersion() + " RELEASE Build");
+		ConsoleLogger.info("");
+		ConsoleLogger.info(c+"Inicializando tarefas para inicialização...");
+
+		if(getNplugin().getRequestedData().isConnectionAvailable()) {
+			if (getNplugin().getRequestedData().isUpdateAvailable() || getNplugin().getRequestedData().isUpdateForced()) {
+				ConsoleLogger.info(c+"Uma nova versão do nProtect está disponível (" + getDescription().getVersion() + " -> " + getNplugin().getRequestedData().getLatestVersion() + ")");
+				getManagement().getUpdaterManager().setUpdateConfirm(true);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		Arrays.loadComandos();
-		Messages.loadMessages();
-		Settings.loadSettings();
-		SpigotCore.core.getManagement().registerListeners(new PlayerListeners());
-		SpigotCore.core.getManagement().registerCommands(new CommandHandler(this.getClass(), "loginstaff", new LoginStaff(), new LoginStaff(), java.util.Arrays.asList("ls"), "Comando para realizar a autenticação como staffer."));
+
+		Messages.load();
+		Settings.load();
+
+		registerListeners(new PlayerListeners());
+		registerCommands(new LoginStaff(this));
+
 		setupPermissionPlugin();
 		setupLoginPlugin();
+
 		ConsoleLogger.info("Inicializacao completa com sucesso");
 	}
 
-	public void onDisable() {
-		SpigotCore.core.onDisable();
-	}
+	@Override
+	public void disablePlugin() {}
 
 	public static void setLoginProvider(LoginProvider loginProvider, Listener listener, LoginEnum loginEnum) {
 		nProtect.loginProvider = loginProvider;
 		nProtect.loginType = loginEnum;
-		Bukkit.getPluginManager().registerEvents(listener, nProtect.instance);
-		ConsoleLogger.info("[Provider] Permission provider is: " + loginProvider.getInjectorClass().getSimpleName());
+		Bukkit.getPluginManager().registerEvents(listener, nProtect.nprotect);
+		ConsoleLogger.info("[Provider] Login provider is: " + loginProvider.getProviderClass().getSimpleName());
 	}
 
 	public static void setPermissionProvider(PermissionProvider permissionProvider, PermissionEnum permissionEnum) {
 		nProtect.permissionProvider = permissionProvider;
 		nProtect.permissionType = permissionEnum;
-		ConsoleLogger.info("[Provider] Permission provider is: " + permissionProvider.getInjectorClass().getSimpleName());
+		ConsoleLogger.info("[Provider] Permission provider is: " + permissionProvider.getProviderClass().getSimpleName());
 	}
 
 	private void setupLoginPlugin() {
@@ -144,10 +154,11 @@ public class nProtect extends JavaPlugin {
 	}
 
 	private void manageConfig() {
-		if(!new File(getDataFolder(), "config.yml").exists()) {
-			saveResource("config.yml", false);
+		nConfig config = new nConfig("config.yml", getDataFolder());
+		if(!config.existsConfig()) {
+			config.saveDefaultConfig("config.yml");
 		}
-		for(String grupo : getConfig().getConfigurationSection("Config.Grupos").getKeys(false)) {
+		for(String grupo : config.getConfigurationSection("Config.Grupos")) {
 			String senha = getConfig().getString("Config.Grupos." + grupo);
 			grupos.add(new Group(grupo, senha));
 		}

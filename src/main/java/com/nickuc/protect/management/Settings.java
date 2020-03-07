@@ -2,7 +2,6 @@
  * Copyright NickUC
  * -
  * Esta class pertence ao projeto de NickUC
- * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.com
  * -
  * É expressamente proibido alterar o nome do proprietário do código, sem
@@ -11,34 +10,52 @@
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
  */
 
-package nickultracraft.protect.objects;
+package com.nickuc.protect.management;
 
-import nickultracraft.ncore.minecraft.spigot.logging.ConsoleLogger;
-import nickultracraft.protect.nProtect;
+import com.nickuc.ncore.api.logger.ConsoleLogger;
+import com.nickuc.protect.nProtect;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class Settings {
+public final class Settings {
 
 	private static HashMap<String, String> settingsMap = new HashMap<>();
+	public static Set<String> allowedCommands = new HashSet<>();
 
-	public static void loadSettings() {
+	public static void load() {
 		settingsMap.clear();
 		try {
-			if(nProtect.instance.getConfig().isSet("Config.UsarTitle")) add("usar_title", loadFromConfig("UsarTitle"));
-			if(nProtect.instance.getConfig().isSet("Config.AutoLogin")) add("auto_login", loadFromConfig("AutoLogin"));
-			if(nProtect.instance.getConfig().isSet("Config.TempoLogar")) add("tempo_logar", loadFromConfig("TempoLogar"));
-			if(nProtect.instance.getConfig().isSet("Config.SenhaDefault")) add("senha_default_sem_cargo", loadFromConfig("SenhaDefault"));
-			addMissingSettings();
-			
-			for(String setting : settingsMap.keySet()) {
-				ConsoleLogger.debug("Loaded '" + setting + "' -> '" + settingsMap.get(setting) + "'");
+			if(nProtect.nprotect.getConfig().isSet("Config.UsarTitle")) {
+				add("usar_title", loadFromConfig("UsarTitle"));
 			}
+			if(nProtect.nprotect.getConfig().isSet("Config.AutoLogin")) {
+				add("auto_login", loadFromConfig("AutoLogin"));
+			}
+			if(nProtect.nprotect.getConfig().isSet("Config.TempoLogar")) {
+				add("tempo_logar", loadFromConfig("TempoLogar"));
+			}
+			if(nProtect.nprotect.getConfig().isSet("Config.SenhaDefault")) {
+				add("senha_default_sem_cargo", loadFromConfig("SenhaDefault"));
+			}
+			addMissingSettings();
+			loadCommands();
 			
+			for(Map.Entry<String, String> entry : settingsMap.entrySet()) {
+				ConsoleLogger.debug("Loaded '" + entry.getKey() + "' -> '" + entry.getValue() + "'");
+			}
 		} catch (Exception e) {
 			ConsoleLogger.warning("Falha ao carregar as configuracoes. Usando valores default.");
 			addMissingSettings();
+		}
+	}
+
+	private static void loadCommands() {
+		for (String command : nProtect.nprotect.getConfig().getStringList("Config.ComandosPermitidos")) {
+			allowedCommands.add(command.toLowerCase());
 		}
 	}
 
@@ -54,7 +71,7 @@ public class Settings {
 	}
 
 	protected static String loadFromConfig(String path) {
-		FileConfiguration config = nProtect.instance.getConfig(); return config.getString("Config." + path);
+		FileConfiguration config = nProtect.nprotect.getConfig(); return config.getString("Config." + path);
 	}
 
 	public static Boolean getCachedSetting(String selectValue) {

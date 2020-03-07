@@ -2,7 +2,6 @@
  * Copyright NickUC
  * -
  * Esta class pertence ao projeto de NickUC
- * Discord: NickUltracraft#4550
  * Mais informações: https://nickuc.com
  * -
  * É expressamente proibido alterar o nome do proprietário do código, sem
@@ -11,31 +10,31 @@
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
  */
 
-package nickultracraft.protect.objects;
+package com.nickuc.protect.management;
 
-import nickultracraft.ncore.minecraft.spigot.logging.ConsoleLogger;
-import nickultracraft.protect.nProtect;
+import com.nickuc.ncore.api.logger.ConsoleLogger;
+import com.nickuc.protect.nProtect;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class Messages {
+public final class Messages {
 	
 	private static HashMap<String, String> messagesMap = new HashMap<>();
 
-	public static void loadMessages() {
+	public static void load() {
 		messagesMap.clear();
 		try {
-			for(String messageToAdd : nProtect.instance.getConfig().getConfigurationSection("Mensagens").getKeys(false)) {
-				if(nProtect.instance.getConfig().isSet("Mensagens." + messageToAdd)) { add(messageToAdd, loadFromConfig(messageToAdd)); }
+			for(String messageToAdd : nProtect.nprotect.getConfig().getConfigurationSection("Mensagens").getKeys(false)) {
+				if(nProtect.nprotect.getConfig().isSet("Mensagens." + messageToAdd)) add(messageToAdd, loadFromConfig(messageToAdd));
 			}
 			addMissingMessages();
 			
-			for(String messageMap : messagesMap.keySet()) {
-				ConsoleLogger.debug("Loaded '" + messageMap + "' -> '" + messagesMap.get(messageMap) + "'");
+			for(Map.Entry<String, String> entry : messagesMap.entrySet()) {
+				ConsoleLogger.debug("Loaded '" + entry.getKey() + "' -> '" + entry.getValue() + "'");
 			}
-			
 		} catch (Exception e) {
 			ConsoleLogger.warning("Falha ao carregar as mensagens. Usando valores default.");
 			addMissingMessages();
@@ -63,7 +62,7 @@ public class Messages {
 	}
 
 	protected static String loadFromConfig(String path) {
-		FileConfiguration config = nProtect.instance.getConfig(); return config.getString("Mensagens." + path);
+		FileConfiguration config = nProtect.nprotect.getConfig(); return config.getString("Mensagens." + path);
 	}
 
 	public static String getCachedMessage(String selectValue) {

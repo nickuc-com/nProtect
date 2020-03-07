@@ -1,6 +1,8 @@
 name: nProtect
-author: NickUltracraft
-version: 2.5
-main: nickultracraft.protect.nProtect
-website: https://nickuc.com
-softdepend: [LuckPerms, PermissionsEx, GroupManager, nLogin, AuthMe, Login, Vault]
+version: 3.0
+main: com.nickuc.protect.nProtect
+description: 'Seu plugin de LoginStaff prático.'
+website: 'https://www.nickuc.com'
+api-version: 1.13
+authors: [NickUC]
+softdepend: [LuckPerms,PermissionsEx,GroupManager,nLogin,AuthMe,Login,Vault,CoreLibs]
