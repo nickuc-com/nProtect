@@ -13,16 +13,18 @@
 package com.nickuc.protect.commands;
 
 import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.minecraft.spigot.command.AbstractCommand;
+import com.nickuc.ncore.api.settings.Messages;
+import com.nickuc.ncore.api.shared.SharedPlayer;
+import com.nickuc.ncore.api.shared.command.SharedCommand;
+import com.nickuc.ncore.api.shared.command.sender.SharedCommandSender;
 import com.nickuc.protect.events.PlayerWrongLoginStaffEvent;
-import com.nickuc.protect.management.Messages;
+import com.nickuc.protect.management.MessagesEnum;
 import com.nickuc.protect.management.PlayerCache;
 import com.nickuc.protect.nProtect;
 import com.nickuc.protect.objects.Account;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public final class LoginStaff extends AbstractCommand<nProtect> {
+public final class LoginStaff extends SharedCommand<nProtect> {
 
 	public LoginStaff(nProtect spigot) {
 		super(spigot,"loginstaff");
@@ -30,38 +32,38 @@ public final class LoginStaff extends AbstractCommand<nProtect> {
 	}
 
 	@Override
-	public void execute(CommandSender sender, String lb, String[] args) {
-		if (!(sender instanceof Player)) {
+	public void execute(SharedCommandSender sender, String lb, String[] args) throws Exception {
+		if (!(sender instanceof SharedPlayer)) {
 			sender.sendMessage("§cDesculpe, mas este comando está indisponível para o console.");
 			return;
 		}
-		Player p = (Player)sender;
+		Player player = sender.getSender();
 		if(args.length != 1) {
-			p.sendMessage(Messages.getCachedMessage("argumentos_invalidos"));
+			player.sendMessage(Messages.getMessage(MessagesEnum.INVALID_ARGS));
 			return;
 		}
-		Account account = new Account(p);
+		Account account = new Account(plugin, player);
 		if(!account.isStaffer()) {
-			p.sendMessage(Messages.getCachedMessage("nao_staffer"));
+			player.sendMessage(Messages.getMessage(MessagesEnum.NAO_STAFFER));
 			return;
 		}
-		if(PlayerCache.isAuthenticated(p)) {
-			p.sendMessage(Messages.getCachedMessage("ja_autenticado"));
+		if(PlayerCache.isAuthenticated(player)) {
+			player.sendMessage(Messages.getMessage(MessagesEnum.JA_AUTENTICADO));
 			return;
 		}
 		String password = args[0];
 		if(!account.getGrupo().getPassword().equals(password)) {
-			PlayerWrongLoginStaffEvent event = new PlayerWrongLoginStaffEvent(p.getName(), password, false);
-			event.callEvent(spigot);
+			PlayerWrongLoginStaffEvent event = new PlayerWrongLoginStaffEvent(player.getName(), password, false);
+			event.callEvent(plugin);
 
 			if(!event.isCancelled()) {
-				ConsoleLogger.warning("O jogador " + p.getName() + " " + p.getAddress().getHostString() + " inseriu uma senha incorreta para o loginstaff.");
-				p.kickPlayer(Messages.getCachedMessage("senha_incorreta"));
+				ConsoleLogger.warning("O jogador " + player.getName() + " " + player.getAddress().getHostString() + " inseriu uma senha incorreta para o loginstaff.");
+				player.kickPlayer(Messages.getMessage(MessagesEnum.INCORRECT_PASS));
 			}
 			return;
 		}
-		ConsoleLogger.debug("Login efetuado para " + p.getName() + " para " + account.toString() + ".");
-		account.forceLogin(p);
+		ConsoleLogger.debug("Login efetuado para " + player.getName() + " para " + account.toString() + ".");
+		account.forceLogin(player);
 	}
 
 }

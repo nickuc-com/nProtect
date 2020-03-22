@@ -15,7 +15,7 @@ package com.nickuc.protect.events;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import com.nickuc.ncore.api.minecraft.spigot.events.PluginEvent;
+import com.nickuc.ncore.api.plugin.spigot.events.PluginEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
