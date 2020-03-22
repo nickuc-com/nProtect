@@ -15,19 +15,19 @@ package com.nickuc.protect;
 
 import com.nickuc.ncore.api.config.nConfig;
 import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.minecraft.spigot.AbstractPlugin;
+import com.nickuc.ncore.api.plugin.spigot.AbstractPlugin;
 import com.nickuc.protect.commands.LoginStaff;
+import com.nickuc.protect.hook.LoginPlugin;
 import com.nickuc.protect.hook.LoginProvider;
-import com.nickuc.protect.hook.PermissionProvider;
-import com.nickuc.protect.hook.plugins.login.AuthMe;
-import com.nickuc.protect.hook.plugins.login.LoginEnum;
-import com.nickuc.protect.hook.plugins.login.MambaLogin;
-import com.nickuc.protect.hook.plugins.login.nLogin;
-import com.nickuc.protect.hook.plugins.permissions.*;
+import com.nickuc.protect.hook.plugins.AuthMe;
+import com.nickuc.protect.hook.plugins.MambaLogin;
+import com.nickuc.protect.hook.plugins.nLogin;
 import com.nickuc.protect.listener.PlayerListeners;
-import com.nickuc.protect.management.Messages;
-import com.nickuc.protect.management.Settings;
+import com.nickuc.protect.management.MessagesEnum;
+import com.nickuc.protect.management.SettingsEnum;
 import com.nickuc.protect.objects.Group;
+import lombok.Getter;
+import lombok.Setter;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -38,14 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class nProtect extends AbstractPlugin {
-	
-	public static nProtect nprotect;
-	public static LoginEnum loginType;
-	public static PermissionEnum permissionType;
-	public static LoginProvider loginProvider;
-	public static PermissionProvider permissionProvider;
-	public static List<Group> grupos = new ArrayList<>();
-	public static Permission permissionPluginVault = null;
+
+	@Getter @Setter private static LoginProvider loginProvider;
+	@Getter private static List<Group> grupos = new ArrayList<>();
+	public static Permission permission;
 
 	public nProtect() {
 		super("nProtect");
@@ -53,9 +49,10 @@ public class nProtect extends AbstractPlugin {
 
 	@Override
 	public void enablePlugin() {
-		nprotect = this;
-		manageConfig();
 
+		/**
+		 * Plugin startup
+		 */
 		String c = "§b";
 		ConsoleLogger.info(c+"         ___            _            _   ");
 		ConsoleLogger.info(c+" _ __   / _ \\_ __ ___ | |_ ___  ___| |_ ");
@@ -67,78 +64,64 @@ public class nProtect extends AbstractPlugin {
 		ConsoleLogger.info("");
 		ConsoleLogger.info(c+"Inicializando tarefas para inicialização...");
 
-		if(getNplugin().getRequestedData().isConnectionAvailable()) {
-			if (getNplugin().getRequestedData().isUpdateAvailable() || getNplugin().getRequestedData().isUpdateForced()) {
-				ConsoleLogger.info(c+"Uma nova versão do nProtect está disponível (" + getDescription().getVersion() + " -> " + getNplugin().getRequestedData().getLatestVersion() + ")");
-				getManagement().getUpdaterManager().setUpdateConfirm(true);
-			}
-		}
+		getNplugin().notifyUpdate(c, true);
 
-		Messages.load();
-		Settings.load();
+		/**
+		 * Setup config
+		 */
+		config();
 
-		registerListeners(new PlayerListeners());
+		/**
+		 * Register commands
+		 */
 		registerCommands(new LoginStaff(this));
 
+		/**
+		 * Register listeners
+		 */
+		registerListeners(new PlayerListeners(this));
+
+		/**
+		 * Setup hook
+		 */
 		setupPermissionPlugin();
 		setupLoginPlugin();
-
-		ConsoleLogger.info("Inicializacao completa com sucesso");
 	}
 
-	@Override
-	public void disablePlugin() {}
-
-	public static void setLoginProvider(LoginProvider loginProvider, Listener listener, LoginEnum loginEnum) {
+	public void setLoginProvider(LoginProvider loginProvider, Listener listener, LoginPlugin loginEnum) {
 		nProtect.loginProvider = loginProvider;
-		nProtect.loginType = loginEnum;
-		Bukkit.getPluginManager().registerEvents(listener, nProtect.nprotect);
-		ConsoleLogger.info("[Provider] Login provider is: " + loginProvider.getProviderClass().getSimpleName());
-	}
-
-	public static void setPermissionProvider(PermissionProvider permissionProvider, PermissionEnum permissionEnum) {
-		nProtect.permissionProvider = permissionProvider;
-		nProtect.permissionType = permissionEnum;
-		ConsoleLogger.info("[Provider] Permission provider is: " + permissionProvider.getProviderClass().getSimpleName());
+		registerListeners(listener);
+		ConsoleLogger.info("[Provider] Login provider is: " + loginProvider.getLoginPlugin().getName());
 	}
 
 	private void setupLoginPlugin() {
 		PluginManager pm = Bukkit.getPluginManager();
 		if(pm.getPlugin("nLogin") != null) {
-			setLoginProvider(new nLogin(), new nLogin(), LoginEnum.NLOGIN);
+			nLogin nlogin = new nLogin();
+			setLoginProvider(nlogin, nlogin, LoginPlugin.NLOGIN);
 		} else if(pm.getPlugin("AuthMe") != null) {
-			setLoginProvider(new AuthMe(), new AuthMe(), LoginEnum.AUTHME);
+			AuthMe authme = new AuthMe();
+			setLoginProvider(authme, authme, LoginPlugin.AUTHME);
 		} else if(pm.getPlugin("Login") != null) {
 			try {
 				Class.forName("rush.login.events.PlayerAuthLoginEvent");
 				Class.forName("rush.login.events.PlayerAuthRegisterEvent");
-				setLoginProvider(new MambaLogin(), new MambaLogin(), LoginEnum.MAMBALOGIN);
+				MambaLogin mambalogin = new MambaLogin();
+				setLoginProvider(mambalogin, mambalogin, LoginPlugin.MAMBALOGIN);
 			} catch (ClassNotFoundException e) {}
 		} else {
-			loginType = LoginEnum.UNKNOWN;
-			ConsoleLogger.warning("Nenhum plugin de login detectado. Podem existir outros plugins que se conectem com o nProtect");
+			setLoginProvider(new LoginProvider() {
+				@Override
+				public LoginPlugin getLoginPlugin() {
+					return LoginPlugin.UNKNOWN;
+				}
+			});
+			ConsoleLogger.warning("Nenhum plugin de login detectado. Usando listeners do Bukkit");
 		}
 	}
 
 	private void setupPermissionPlugin() {
-		if(setupVault()) {
-			ConsoleLogger.warning("Plugin de permissoes foi detectado automaticamente pelo hook do Vault (" + permissionPluginVault.getName() + ")");
-			setPermissionProvider(new VaultPlugin(), PermissionEnum.VAULT_PLUGIN);
-			return;
-		} else {
-			ConsoleLogger.info("Nenhum plugin foi detectado pelo hook do Vault. Utilizando deteccao propria do plugin...");
-		}
-		PluginManager pm = Bukkit.getPluginManager();
-		if(pm.getPlugin("PermissionsEx") != null) {
-			setPermissionProvider(new PermissionsEx(), PermissionEnum.PERMISSIONSEX);
-		} else if(pm.getPlugin("LuckPerms") != null) {
-			setPermissionProvider(new LuckPerms(), PermissionEnum.LUCKPERMS);
-		} else if(pm.getPlugin("GroupManager") != null) {
-			setPermissionProvider(new GroupManager(), PermissionEnum.GROUPMANAGER);
-		} else {
-			permissionType = PermissionEnum.UNKNOW;
-			ConsoleLogger.warning("Nenhum plugin de permissoes detectado. Podem existir outros plugins que se conectem com o nProtect");
-		}
+		ConsoleLogger.warning(setupVault() ? "Plugin de permissões foi detectado automaticamente pelo hook do Vault (" + permission.getName() + ")" : "Nenhum plugin foi detectado pelo hook do Vault. Utilizando deteccao propria do plugin...");
 	}
 
 	private boolean setupVault() {
@@ -146,14 +129,14 @@ public class nProtect extends AbstractPlugin {
 		if(pm.getPlugin("Vault") != null) {
 			RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
 		    if (permissionProvider != null) {
-		    	permissionPluginVault = permissionProvider.getProvider();
+		    	permission = permissionProvider.getProvider();
 		    }
-		    return permissionPluginVault != null;
+		    return permission != null;
 		}
 		return false;
 	}
 
-	private void manageConfig() {
+	private void config() {
 		nConfig config = new nConfig("config.yml", getDataFolder());
 		if(!config.existsConfig()) {
 			config.saveDefaultConfig("config.yml");
@@ -162,5 +145,11 @@ public class nProtect extends AbstractPlugin {
 			String senha = getConfig().getString("Config.Grupos." + grupo);
 			grupos.add(new Group(grupo, senha));
 		}
+
+		/**
+		 * Load settings
+		 */
+		MessagesEnum.reload(config);
+		SettingsEnum.reload(config);
 	}
 }

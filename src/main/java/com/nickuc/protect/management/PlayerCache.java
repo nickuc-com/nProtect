@@ -19,18 +19,18 @@ import java.util.Set;
 
 public final class PlayerCache {
 	
-	private static Set<String> jogadoresLogados = new HashSet<>();
+	private static Set<String> logados = new HashSet<>();
 
-	public static void setAuthenticated(String username) {
-		jogadoresLogados.add(username.toLowerCase());
+	public static void add(String username) {
+		logados.add(username.toLowerCase());
 	}
 
-	public static void removeAuthenticated(String username) {
-		jogadoresLogados.remove(username.toLowerCase());
+	public static void remove(String username) {
+		logados.remove(username.toLowerCase());
 	}
 
 	public static boolean isAuthenticated(Player player) {
-		return jogadoresLogados.contains(player.getName().toLowerCase());
+		return logados.contains(player.getName().toLowerCase());
 	}
 
 }

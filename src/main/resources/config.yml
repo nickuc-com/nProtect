@@ -4,7 +4,9 @@
 # | | | / ___/| | | (_) | ||  __/ (__| |_
 # |_| |_\/    |_|  \___/ \__\___|\___|\__|
 
-# Precisa de suporte? Contate-me via discord: NickUltracraft#4550
+# Configuração do nProtect v 3.0
+# Precisa de suporte? Entre em nosso grupo do discord: https://www.nickuc.com/discord
+
 Config:
     debug-mode: false
     # Configure aqui os grupos para se logarem como staffer.
