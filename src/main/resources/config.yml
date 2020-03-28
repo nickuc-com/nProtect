@@ -9,6 +9,7 @@
 
 Config:
     debug-mode: false
+
     # Configure aqui os grupos para se logarem como staffer.
     # O nome do grupo deve estar identico no seu plugin de permissões [PermissionsEx, LuckPerms ou GroupManager]
     # Coloque entre aspas a senha desejada para cada cargo.
@@ -17,16 +18,21 @@ Config:
         Mod: "loginstaff_mod"
         Admin: "loginstaff_admin"
         Master: "loginstaff_master"
+
     # Caso utilize uma versão muito antiga, altere este valor para false,
     # para evitar problemas com erros.
     UsarTitle: true
+
     # Um usuário não esta em nenhum grupo acima ou não utiliza nenhum plugin de permissões compativel e tem a permissão 'loginstaff.staffer',
     # terá que usar qual senha para se logar?
     SenhaDefault: "nprotect_default"
+
     # Loga automaticamente staffers que já se logaram com o mesmo ip anteriormente.
     AutoLogin: true
+
     # Tempo para um staffer se autenticar com o /loginstaff
     TempoLogar: 25
+
     # Lista de comandos permitidos antes de usar /loginstaff
     ComandosPermitidos:
     - "/loginstaff"
@@ -38,6 +44,7 @@ Config:
     - "/email"
     - "/twitter"
     - "/pin"
+
 # Lista de todas as mensagens do plugin.
 # Caso uma mensagem não exista, o valor desta mensagem será default.
 Mensagens:

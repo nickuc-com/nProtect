@@ -44,7 +44,10 @@ public final class PlayerListeners implements Listener {
 	public void onLoginComplete(LoginCompleteEvent e) {
 		Player player = e.getPlayer();
 		Account account = new Account(nprotect, player);
-		if (!account.isStaffer()) return;
+		if (!account.isStaffer()) {
+			PlayerCache.add(player.getName());
+			return;
+		}
 
 		startTask(player, account);
 	}
@@ -53,7 +56,10 @@ public final class PlayerListeners implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
 		Account account = new Account(nprotect, player);
-		if (!account.isStaffer()) return;
+		if (!account.isStaffer()) {
+			PlayerCache.add(player.getName());
+			return;
+		}
 
 		startTask(player, account);
 	}
