@@ -14,7 +14,7 @@ package com.nickuc.protect.objects;
 
 import com.nickuc.ncore.api.config.nConfig;
 import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.plugin.spigot.reflection.packets.TitleAPI;
+import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.TitleAPI;
 import com.nickuc.ncore.api.settings.Messages;
 import com.nickuc.ncore.api.settings.Settings;
 import com.nickuc.protect.events.PlayerLoginStaffEvent;
@@ -31,8 +31,8 @@ import java.io.File;
 @Getter @ToString
 public final class Account {
 
-	private nProtect nprotect;
-	private Player player;
+	private final nProtect nprotect;
+	private final Player player;
 	private Group grupo;
 	private String address = "127.0.0.1";
 	private boolean staffer = false;
@@ -48,9 +48,16 @@ public final class Account {
 			if (nProtect.permission != null) {
 				nProtect.getGrupos().stream().filter(grupo -> nProtect.permission.playerInGroup(player, grupo.getName())).findFirst().ifPresent(group -> this.grupo = group);
 			} else {
-				if (player != null && player.isOnline() && player.hasPermission("loginstaff.staffer")) this.grupo = new Group("PERMISSION_GROUP", Settings.getString(SettingsEnum.SENHA_DEFAULT_SEM_CARGO));
+				if (player != null && player.isOnline() && player.hasPermission("loginstaff.staffer")) this.grupo = Group.wrap("PERMISSION_GROUP", Settings.getString(SettingsEnum.SENHA_DEFAULT_SEM_CARGO));
 			}
 			this.staffer = (grupo != null);
+
+			File playerData = new File(nprotect.getDataFolder(), "playerdata");
+			if (player != null && playerData.exists()) {
+				File pfile = new File(playerData, player.getName().toLowerCase() + ".yml");
+				nConfig pconfig = new nConfig(pfile);
+				this.address = pconfig.getString("address", address);
+			}
 		} catch (Exception e) {
 			ConsoleLogger.err("Não foi possível carregar o usuário " + (player != null ? player.getName() : ""), e);
 		}
@@ -59,15 +66,9 @@ public final class Account {
 	public void saveAddress(String address) {
 		if (player == null) return;
 
-		File file = new File(nprotect.getDataFolder(), "playerdata");
-		file.mkdirs();
-
-		File pfile = new File(nprotect.getDataFolder() + "/playerdata", player.getName().toLowerCase() + ".yml");
+		File playerData = new File(nprotect.getDataFolder(), "playerdata");
+		File pfile = new File(playerData, player.getName().toLowerCase() + ".yml");
 		nConfig pconfig = new nConfig(pfile);
-
-		if (!pconfig.existsConfig()) {
-			pconfig.saveConfig();
-		}
 		pconfig.set("address", address);
 		pconfig.saveConfig();
 	}
@@ -77,10 +78,7 @@ public final class Account {
 	}
 
 	public void forceLogin(Player p, boolean session) {
-		PlayerLoginStaffEvent loginEvent = new PlayerLoginStaffEvent(p, grupo.getPassword(), false);
-		loginEvent.callEvent(nprotect);
-
-		if (!loginEvent.isCancelled()) {
+		if (new PlayerLoginStaffEvent(p, grupo.getPassword()).callEvt()) {
 			PlayerCache.add(p.getName());
 			if (session) {
 				p.sendMessage(Messages.getMessage(MessagesEnum.LOGOU_CHAT));
@@ -96,7 +94,7 @@ public final class Account {
 				saveAddress(p.getAddress().getHostString());
 			}
 			p.setWalkSpeed(0.2F);
-			p.setFlySpeed(0.2F);
+			p.setFlySpeed(0.1F);
 		}
 	}
 }

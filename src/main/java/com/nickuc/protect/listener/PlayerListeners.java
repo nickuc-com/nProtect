@@ -12,7 +12,8 @@
 
 package com.nickuc.protect.listener;
 
-import com.nickuc.ncore.api.plugin.spigot.reflection.packets.TitleAPI;
+import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
+import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.TitleAPI;
 import com.nickuc.ncore.api.settings.Messages;
 import com.nickuc.ncore.api.settings.Settings;
 import com.nickuc.protect.hook.LoginCompleteEvent;
@@ -22,50 +23,34 @@ import com.nickuc.protect.management.PlayerCache;
 import com.nickuc.protect.management.SettingsEnum;
 import com.nickuc.protect.nProtect;
 import com.nickuc.protect.objects.Account;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 
 import java.util.concurrent.TimeUnit;
 
-public final class PlayerListeners implements Listener {
-
-	private nProtect nprotect;
-
-	public PlayerListeners(nProtect nprotect) {
-		this.nprotect = nprotect;
-	}
+@RequiredArgsConstructor
+public final class PlayerListeners extends Listener<nProtect> {
 
 	@EventHandler
 	public void onLoginComplete(LoginCompleteEvent e) {
-		Player player = e.getPlayer();
-		Account account = new Account(nprotect, player);
-		if (!account.isStaffer()) {
-			PlayerCache.add(player.getName());
-			return;
-		}
-
-		startTask(player, account);
+		startTask(e.getPlayer());
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		Player player = e.getPlayer();
-		Account account = new Account(nprotect, player);
-		if (!account.isStaffer()) {
-			PlayerCache.add(player.getName());
-			return;
+		if (nProtect.getLoginProvider().getLoginPlugin() == LoginPlugin.UNKNOWN) {
+			startTask(e.getPlayer());
 		}
-
-		startTask(player, account);
 	}
 
-	private void startTask(Player player, Account account) {
-		if (nProtect.getLoginProvider().getLoginPlugin() != LoginPlugin.UNKNOWN) {
+	private void startTask(Player player) {
+		Account account = new Account(plugin, player);
+		if (!account.isStaffer()) {
 			PlayerCache.add(player.getName());
 			return;
 		}
@@ -75,9 +60,9 @@ public final class PlayerListeners implements Listener {
 			return;
 		}
 
-		nprotect.runTaskLater(false, () -> {
-			if (!PlayerCache.isAuthenticated(player)) player.kickPlayer(Messages.getMessage(MessagesEnum.DEMOROU_LOGAR));
-		}, 1000*Settings.getInt(SettingsEnum.TEMPO_LOGAR), TimeUnit.MILLISECONDS);
+		plugin.runTaskLater(false, () -> {
+			if (player.isOnline() && !PlayerCache.isAuthenticated(player)) player.kickPlayer(Messages.getMessage(MessagesEnum.DEMOROU_LOGAR));
+		}, Settings.getInt(SettingsEnum.TEMPO_LOGAR), TimeUnit.SECONDS);
 
 		player.setWalkSpeed(0);
 		player.setFlySpeed(0);
@@ -146,7 +131,7 @@ public final class PlayerListeners implements Listener {
 	}
 
 	private void sendWarning(Player comandSender, String plugin) {
-		nprotect.getServer().getOnlinePlayers().stream().filter(player -> player != comandSender && player.hasPermission("nprotect.admin")).forEach(player -> {
+		this.plugin.getServer().getOnlinePlayers().stream().filter(player -> player != comandSender && player.hasPermission("nprotect.admin")).forEach(player -> {
 			player.sendMessage("");
 			player.sendMessage("  §7O jogador " + comandSender.getName() + " tentou desativar o " + ((plugin).equalsIgnoreCase("nprotect") ? "nProtect" : "plugin " + plugin));
 			player.sendMessage("  §7O nProtect evitou que esta tarefa fosse realizada.");

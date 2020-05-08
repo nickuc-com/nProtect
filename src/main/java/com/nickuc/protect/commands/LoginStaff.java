@@ -14,9 +14,9 @@ package com.nickuc.protect.commands;
 
 import com.nickuc.ncore.api.logger.ConsoleLogger;
 import com.nickuc.ncore.api.settings.Messages;
-import com.nickuc.ncore.api.shared.SharedPlayer;
-import com.nickuc.ncore.api.shared.command.SharedCommand;
-import com.nickuc.ncore.api.shared.command.sender.SharedCommandSender;
+import com.nickuc.ncore.api.plugin.shared.sender.SharedPlayer;
+import com.nickuc.ncore.api.plugin.shared.command.SharedCommand;
+import com.nickuc.ncore.api.plugin.shared.sender.SharedSender;
 import com.nickuc.protect.events.PlayerWrongLoginStaffEvent;
 import com.nickuc.protect.management.MessagesEnum;
 import com.nickuc.protect.management.PlayerCache;
@@ -26,13 +26,13 @@ import org.bukkit.entity.Player;
 
 public final class LoginStaff extends SharedCommand<nProtect> {
 
-	public LoginStaff(nProtect spigot) {
-		super(spigot,"loginstaff");
+	public LoginStaff() {
+		super("loginstaff");
 		setDescription("Comando para se autenticar como staffer");
 	}
 
 	@Override
-	public void execute(SharedCommandSender sender, String lb, String[] args) throws Exception {
+	public void execute(SharedSender sender, String lb, String[] args) throws Exception {
 		if (!(sender instanceof SharedPlayer)) {
 			sender.sendMessage("§cDesculpe, mas este comando está indisponível para o console.");
 			return;
@@ -53,10 +53,7 @@ public final class LoginStaff extends SharedCommand<nProtect> {
 		}
 		String password = args[0];
 		if(!account.getGrupo().getPassword().equals(password)) {
-			PlayerWrongLoginStaffEvent event = new PlayerWrongLoginStaffEvent(player.getName(), password, false);
-			event.callEvent(plugin);
-
-			if(!event.isCancelled()) {
+			if (new PlayerWrongLoginStaffEvent(player.getName(), password).callEvt()) {
 				ConsoleLogger.warning("O jogador " + player.getName() + " " + player.getAddress().getHostString() + " inseriu uma senha incorreta para o loginstaff.");
 				player.kickPlayer(Messages.getMessage(MessagesEnum.INCORRECT_PASS));
 			}

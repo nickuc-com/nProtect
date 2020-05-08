@@ -35,8 +35,8 @@ public enum MessagesEnum implements IMessagesEnum {
     LOGAR_CHAT("Mensagens.logar_chat", "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha do grupo %grupo%"),
     LOGAR_CHAT2("Mensagens.logar_chat2", "&ePara se autenticar como staffer, utilize /loginstaff <sua senha>\n&e&lDICA: &eVocê deve inserir a senha para os grupos default.");
 
-    private String key;
-    private String defaultValue;
+    private final String key;
+    private final String defaultValue;
 
     public static void reload(nConfig config) {
         Messages.loadMessages(MessagesEnum.values(), config);

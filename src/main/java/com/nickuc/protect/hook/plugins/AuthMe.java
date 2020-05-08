@@ -13,17 +13,18 @@
 
 package com.nickuc.protect.hook.plugins;
 
+import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
 import com.nickuc.protect.hook.LoginCompleteEvent;
 import com.nickuc.protect.hook.LoginPlugin;
 import com.nickuc.protect.hook.LoginProvider;
+import com.nickuc.protect.nProtect;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class AuthMe implements Listener, LoginProvider {
+public class AuthMe extends Listener<nProtect> implements LoginProvider {
 
 	@EventHandler
 	public void onLogin(fr.xephi.authme.events.LoginEvent e) {
-		new LoginCompleteEvent(e.getPlayer()).call();;
+		new LoginCompleteEvent(e.getPlayer()).callEvt();
 	}
 
 	@Override

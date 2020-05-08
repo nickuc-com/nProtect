@@ -13,18 +13,19 @@
 
 package com.nickuc.protect.hook.plugins;
 
+import com.nickuc.login.api.events.*;
+import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
 import com.nickuc.protect.hook.LoginCompleteEvent;
 import com.nickuc.protect.hook.LoginPlugin;
 import com.nickuc.protect.hook.LoginProvider;
-import nickultracraft.login.events.AuthenticateEvent;
+import com.nickuc.protect.nProtect;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class nLogin implements Listener, LoginProvider {
+public class nLogin extends Listener<nProtect> implements LoginProvider {
 
 	@EventHandler
 	public void onLogar(AuthenticateEvent e) {
-		new LoginCompleteEvent(e.getPlayer()).call();
+		new LoginCompleteEvent(e.getPlayer()).callEvt();
 	}
 
 	@Override

@@ -13,12 +13,9 @@
 package com.nickuc.protect.objects;
 
 import com.nickuc.protect.nProtect;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@AllArgsConstructor @Getter @Setter @ToString
+@AllArgsConstructor(access = AccessLevel.PRIVATE) @Getter @Setter @ToString
 public final class Group {
 
 	private String name;
@@ -29,5 +26,9 @@ public final class Group {
 			if(grupo.name.equalsIgnoreCase(grupoName)) return grupo;
 		}
 		return null;
+	}
+
+	public static Group wrap(String name, String password) {
+		return new Group(name, password);
 	}
 }

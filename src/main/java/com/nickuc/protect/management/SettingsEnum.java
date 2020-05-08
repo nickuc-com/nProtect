@@ -30,8 +30,8 @@ public enum SettingsEnum implements ISettingsEnum {
     COMANDOS_PERMITIDOS("Config.ComandosPermitidos", new ArrayList<>()),
     ;
 
-    private String key;
-    private Object defaultValue;
+    private final String key;
+    private final Object defaultValue;
 
     public static void reload(nConfig config) {
         Settings.loadSettings(SettingsEnum.values(), config);
