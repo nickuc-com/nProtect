@@ -15,7 +15,8 @@ package com.nickuc.protect;
 
 import com.nickuc.ncore.api.config.nConfig;
 import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.plugin.spigot.AbstractPlugin;
+import com.nickuc.ncore.api.plugin.bukkit.AbstractPlugin;
+import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
 import com.nickuc.protect.commands.LoginStaff;
 import com.nickuc.protect.hook.LoginPlugin;
 import com.nickuc.protect.hook.LoginProvider;
@@ -30,7 +31,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -40,7 +40,7 @@ import java.util.List;
 public class nProtect extends AbstractPlugin {
 
 	@Getter @Setter private static LoginProvider loginProvider;
-	@Getter private static List<Group> grupos = new ArrayList<>();
+	@Getter private static final List<Group> grupos = new ArrayList<>();
 	public static Permission permission;
 
 	public nProtect() {
@@ -74,12 +74,12 @@ public class nProtect extends AbstractPlugin {
 		/**
 		 * Register commands
 		 */
-		registerCommands(new LoginStaff(this));
+		registerCommands(new LoginStaff());
 
 		/**
 		 * Register listeners
 		 */
-		registerListeners(new PlayerListeners(this));
+		registerListeners(new PlayerListeners());
 
 		/**
 		 * Setup hook
@@ -88,7 +88,7 @@ public class nProtect extends AbstractPlugin {
 		setupLoginPlugin();
 	}
 
-	public void setLoginProvider(LoginProvider loginProvider, Listener listener, LoginPlugin loginEnum) {
+	public void setLoginProvider(LoginProvider loginProvider, Listener<nProtect> listener, LoginPlugin loginEnum) {
 		nProtect.loginProvider = loginProvider;
 		registerListeners(listener);
 		ConsoleLogger.info("[Provider] Login provider is: " + loginProvider.getLoginPlugin().getName());
@@ -138,12 +138,12 @@ public class nProtect extends AbstractPlugin {
 
 	private void config() {
 		nConfig config = new nConfig("config.yml", getDataFolder());
-		if(!config.existsConfig()) {
+		if(!config.exists()) {
 			config.saveDefaultConfig("config.yml");
 		}
 		for(String grupo : config.getConfigurationSection("Config.Grupos")) {
 			String senha = getConfig().getString("Config.Grupos." + grupo);
-			grupos.add(new Group(grupo, senha));
+			grupos.add(Group.wrap(grupo, senha));
 		}
 
 		/**

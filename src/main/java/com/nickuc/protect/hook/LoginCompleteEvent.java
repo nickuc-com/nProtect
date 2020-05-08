@@ -13,19 +13,13 @@
 
 package com.nickuc.protect.hook;
 
-import com.nickuc.ncore.api.plugin.spigot.events.PluginEvent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import com.nickuc.ncore.api.plugin.bukkit.events.*;
+import lombok.*;
+import org.bukkit.entity.*;
 
 @AllArgsConstructor @Getter
 public final class LoginCompleteEvent extends PluginEvent {
 
-	private Player player;
-
-	public void call() {
-		Bukkit.getServer().getPluginManager().callEvent(this);
-	}
+	private final Player player;
 
 }

@@ -13,24 +13,25 @@
 
 package com.nickuc.protect.hook.plugins;
 
+import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
 import com.nickuc.protect.hook.LoginCompleteEvent;
 import com.nickuc.protect.hook.LoginPlugin;
 import com.nickuc.protect.hook.LoginProvider;
+import com.nickuc.protect.nProtect;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import rush.login.events.PlayerAuthLoginEvent;
 import rush.login.events.PlayerAuthRegisterEvent;
 
-public class MambaLogin implements Listener, LoginProvider {
+public class MambaLogin extends Listener<nProtect> implements LoginProvider {
 
 	@EventHandler
 	public void onLogar(PlayerAuthLoginEvent e) {
-		new LoginCompleteEvent(e.getPlayer()).call();
+		new LoginCompleteEvent(e.getPlayer()).callEvt();
 	}
 
 	@EventHandler
 	public void onRegistrar(PlayerAuthRegisterEvent e) {
-		new LoginCompleteEvent(e.getPlayer()).call();
+		new LoginCompleteEvent(e.getPlayer()).callEvt();
 	}
 
 	@Override

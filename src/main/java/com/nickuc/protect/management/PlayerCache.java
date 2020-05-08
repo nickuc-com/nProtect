@@ -19,7 +19,7 @@ import java.util.Set;
 
 public final class PlayerCache {
 	
-	private static Set<String> logados = new HashSet<>();
+	private static final Set<String> logados = new HashSet<>();
 
 	public static void add(String username) {
 		logados.add(username.toLowerCase());

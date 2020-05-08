@@ -12,17 +12,14 @@
 
 package com.nickuc.protect.events;
 
+import com.nickuc.ncore.api.plugin.bukkit.events.CancellableEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import com.nickuc.ncore.api.plugin.spigot.events.PluginEvent;
-import org.bukkit.event.Cancellable;
 
 @AllArgsConstructor @Getter
-public final class PlayerWrongLoginStaffEvent extends PluginEvent implements Cancellable {
+public final class PlayerWrongLoginStaffEvent extends CancellableEvent {
 
-	private String player;
-	private String password;
-	@Setter private boolean cancelled;
+	private final String player;
+	private final String password;
 
 }
