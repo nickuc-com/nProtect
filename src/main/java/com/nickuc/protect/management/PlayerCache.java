@@ -12,10 +12,9 @@
 
 package com.nickuc.protect.management;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class PlayerCache {
 	

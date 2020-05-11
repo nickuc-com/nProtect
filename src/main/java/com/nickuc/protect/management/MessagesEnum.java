@@ -12,11 +12,9 @@
 
 package com.nickuc.protect.management;
 
-import com.nickuc.ncore.api.config.nConfig;
-import com.nickuc.ncore.api.settings.IMessagesEnum;
-import com.nickuc.ncore.api.settings.Messages;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.nickuc.ncore.api.config.*;
+import com.nickuc.ncore.api.settings.*;
+import lombok.*;
 
 @AllArgsConstructor @Getter
 public enum MessagesEnum implements IMessagesEnum {

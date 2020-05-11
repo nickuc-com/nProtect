@@ -12,17 +12,15 @@
 
 package com.nickuc.protect.commands;
 
-import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.settings.Messages;
-import com.nickuc.ncore.api.plugin.shared.sender.SharedPlayer;
-import com.nickuc.ncore.api.plugin.shared.command.SharedCommand;
-import com.nickuc.ncore.api.plugin.shared.sender.SharedSender;
-import com.nickuc.protect.events.PlayerWrongLoginStaffEvent;
-import com.nickuc.protect.management.MessagesEnum;
-import com.nickuc.protect.management.PlayerCache;
-import com.nickuc.protect.nProtect;
-import com.nickuc.protect.objects.Account;
-import org.bukkit.entity.Player;
+import com.nickuc.ncore.api.logger.*;
+import com.nickuc.ncore.api.plugin.shared.command.*;
+import com.nickuc.ncore.api.plugin.shared.sender.*;
+import com.nickuc.ncore.api.settings.*;
+import com.nickuc.protect.events.*;
+import com.nickuc.protect.management.*;
+import com.nickuc.protect.*;
+import com.nickuc.protect.model.*;
+import org.bukkit.entity.*;
 
 public final class LoginStaff extends SharedCommand<nProtect> {
 

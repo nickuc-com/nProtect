@@ -13,8 +13,7 @@
 
 package com.nickuc.protect.hook;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor @Getter
 public enum LoginPlugin {
