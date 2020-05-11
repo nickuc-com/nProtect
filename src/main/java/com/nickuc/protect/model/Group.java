@@ -10,9 +10,9 @@
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
  */
 
-package com.nickuc.protect.objects;
+package com.nickuc.protect.model;
 
-import com.nickuc.protect.nProtect;
+import com.nickuc.protect.*;
 import lombok.*;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE) @Getter @Setter @ToString

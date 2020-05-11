@@ -10,23 +10,19 @@
  * Este aviso não pode ser removido ou alterado de qualquer distribuição de origem.
  */
 
-package com.nickuc.protect.objects;
+package com.nickuc.protect.model;
 
-import com.nickuc.ncore.api.config.nConfig;
-import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.TitleAPI;
-import com.nickuc.ncore.api.settings.Messages;
-import com.nickuc.ncore.api.settings.Settings;
-import com.nickuc.protect.events.PlayerLoginStaffEvent;
-import com.nickuc.protect.management.MessagesEnum;
-import com.nickuc.protect.management.PlayerCache;
-import com.nickuc.protect.management.SettingsEnum;
-import com.nickuc.protect.nProtect;
-import lombok.Getter;
-import lombok.ToString;
-import org.bukkit.entity.Player;
+import com.nickuc.ncore.api.config.*;
+import com.nickuc.ncore.api.logger.*;
+import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.*;
+import com.nickuc.ncore.api.settings.*;
+import com.nickuc.protect.events.*;
+import com.nickuc.protect.management.*;
+import com.nickuc.protect.*;
+import lombok.*;
+import org.bukkit.entity.*;
 
-import java.io.File;
+import java.io.*;
 
 @Getter @ToString
 public final class Account {

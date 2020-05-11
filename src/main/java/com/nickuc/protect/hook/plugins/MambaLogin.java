@@ -14,13 +14,10 @@
 package com.nickuc.protect.hook.plugins;
 
 import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
-import com.nickuc.protect.hook.LoginCompleteEvent;
-import com.nickuc.protect.hook.LoginPlugin;
-import com.nickuc.protect.hook.LoginProvider;
-import com.nickuc.protect.nProtect;
-import org.bukkit.event.EventHandler;
-import rush.login.events.PlayerAuthLoginEvent;
-import rush.login.events.PlayerAuthRegisterEvent;
+import com.nickuc.protect.hook.*;
+import com.nickuc.protect.*;
+import org.bukkit.event.*;
+import rush.login.events.*;
 
 public class MambaLogin extends Listener<nProtect> implements LoginProvider {
 

@@ -13,29 +13,22 @@
 
 package com.nickuc.protect;
 
-import com.nickuc.ncore.api.config.nConfig;
-import com.nickuc.ncore.api.logger.ConsoleLogger;
-import com.nickuc.ncore.api.plugin.bukkit.AbstractPlugin;
-import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
-import com.nickuc.protect.commands.LoginStaff;
-import com.nickuc.protect.hook.LoginPlugin;
-import com.nickuc.protect.hook.LoginProvider;
-import com.nickuc.protect.hook.plugins.AuthMe;
-import com.nickuc.protect.hook.plugins.MambaLogin;
-import com.nickuc.protect.hook.plugins.nLogin;
-import com.nickuc.protect.listener.PlayerListeners;
-import com.nickuc.protect.management.MessagesEnum;
-import com.nickuc.protect.management.SettingsEnum;
-import com.nickuc.protect.objects.Group;
-import lombok.Getter;
-import lombok.Setter;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import com.nickuc.ncore.api.config.*;
+import com.nickuc.ncore.api.logger.*;
+import com.nickuc.ncore.api.plugin.bukkit.*;
+import com.nickuc.ncore.api.plugin.bukkit.events.*;
+import com.nickuc.protect.commands.*;
+import com.nickuc.protect.hook.*;
+import com.nickuc.protect.hook.plugins.*;
+import com.nickuc.protect.listener.*;
+import com.nickuc.protect.management.*;
+import com.nickuc.protect.model.*;
+import lombok.*;
+import net.milkbowl.vault.permission.*;
+import org.bukkit.*;
+import org.bukkit.plugin.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class nProtect extends AbstractPlugin {
 

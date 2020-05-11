@@ -12,13 +12,11 @@
 
 package com.nickuc.protect.management;
 
-import com.nickuc.ncore.api.config.nConfig;
-import com.nickuc.ncore.api.settings.ISettingsEnum;
-import com.nickuc.ncore.api.settings.Settings;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.nickuc.ncore.api.config.*;
+import com.nickuc.ncore.api.settings.*;
+import lombok.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @AllArgsConstructor @Getter
 public enum SettingsEnum implements ISettingsEnum {

@@ -12,10 +12,9 @@
 
 package com.nickuc.protect.events;
 
-import com.nickuc.ncore.api.plugin.bukkit.events.CancellableEvent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.bukkit.entity.Player;
+import com.nickuc.ncore.api.plugin.bukkit.events.*;
+import lombok.*;
+import org.bukkit.entity.*;
 
 @AllArgsConstructor @Getter
 public final class PlayerLoginStaffEvent extends CancellableEvent {
