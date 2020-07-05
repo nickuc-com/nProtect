@@ -14,8 +14,9 @@ package com.nickuc.protect.model;
 
 import com.nickuc.ncore.api.config.*;
 import com.nickuc.ncore.api.logger.*;
-import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.*;
+import com.nickuc.ncore.api.plugin.shared.sender.*;
 import com.nickuc.ncore.api.settings.*;
+import com.nickuc.ncore.plugin.bukkit.reflection.packets.*;
 import com.nickuc.protect.events.*;
 import com.nickuc.protect.management.*;
 import com.nickuc.protect.*;
@@ -28,12 +29,12 @@ import java.io.*;
 public final class Account {
 
 	private final nProtect nprotect;
-	private final Player player;
+	private final SharedPlayer player;
 	private Group grupo;
 	private String address = "127.0.0.1";
 	private boolean staffer = false;
 
-	public Account(nProtect nprotect, Player player) {
+	public Account(nProtect nprotect, SharedPlayer player) {
 		this.nprotect = nprotect;
 		this.player = player;
 		reload();
@@ -42,7 +43,7 @@ public final class Account {
 	public void reload() {
 		try {
 			if (nProtect.permission != null) {
-				nProtect.getGrupos().stream().filter(grupo -> nProtect.permission.playerInGroup(player, grupo.getName())).findFirst().ifPresent(group -> this.grupo = group);
+				nProtect.getGrupos().stream().filter(grupo -> nProtect.permission.playerInGroup(player.getSender(), grupo.getName())).findFirst().ifPresent(group -> this.grupo = group);
 			} else {
 				if (player != null && player.isOnline() && player.hasPermission("loginstaff.staffer")) this.grupo = Group.wrap("PERMISSION_GROUP", Settings.getString(SettingsEnum.SENHA_DEFAULT_SEM_CARGO));
 			}
@@ -69,28 +70,29 @@ public final class Account {
 		pconfig.saveConfig();
 	}
 
-	public void forceLogin(Player p) {
-		forceLogin(p, false);
+	public void forceLogin(SharedPlayer sharedPlayer) {
+		forceLogin(sharedPlayer, false);
 	}
 
-	public void forceLogin(Player p, boolean session) {
-		if (new PlayerLoginStaffEvent(p, grupo.getPassword()).callEvt()) {
-			PlayerCache.add(p.getName());
+	public void forceLogin(SharedPlayer sharedPlayer, boolean session) {
+		Player player = sharedPlayer.getSender();
+		if (new PlayerLoginStaffEvent(player, grupo.getPassword()).callEvt()) {
+			sharedPlayer.temp().define("logado", player.getAddress().getAddress().getHostAddress());
+			player.sendMessage(Messages.getMessage(MessagesEnum.LOGOU_CHAT));
 			if (session) {
-				p.sendMessage(Messages.getMessage(MessagesEnum.LOGOU_CHAT));
 				if (Settings.getBoolean(SettingsEnum.USAR_TITLE)) {
-					TitleAPI.sendTitle(p, 0, 8, 5, Messages.getMessage(MessagesEnum.LOGINSTAFF_TITLE), Messages.getMessage(MessagesEnum.LOGOU_SUBTITLE_SESSION));
+					TitleAPI.sendTitle(player, 0, 8, 5, Messages.getMessage(MessagesEnum.LOGINSTAFF_TITLE), Messages.getMessage(MessagesEnum.LOGOU_SUBTITLE_SESSION));
 				}
 			} else {
 				if (Settings.getBoolean(SettingsEnum.USAR_TITLE)) {
-					TitleAPI.sendTitle(p, 0, 8, 5, Messages.getMessage(MessagesEnum.LOGINSTAFF_TITLE), Messages.getMessage(MessagesEnum.LOGOU_SUBTITLE));
+					TitleAPI.sendTitle(player, 0, 8, 5, Messages.getMessage(MessagesEnum.LOGINSTAFF_TITLE), Messages.getMessage(MessagesEnum.LOGOU_SUBTITLE));
 				}
 			}
-			if (Settings.getBoolean(SettingsEnum.AUTO_LOGIN) && !p.getAddress().getHostString().equals(address)) {
-				saveAddress(p.getAddress().getHostString());
+			if (Settings.getBoolean(SettingsEnum.AUTO_LOGIN) && !player.getAddress().getAddress().getHostAddress().equals(address)) {
+				saveAddress(player.getAddress().getAddress().getHostAddress());
 			}
-			p.setWalkSpeed(0.2F);
-			p.setFlySpeed(0.1F);
+			player.setWalkSpeed(0.2F);
+			player.setFlySpeed(0.1F);
 		}
 	}
 }

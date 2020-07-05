@@ -24,7 +24,7 @@ public enum LoginPlugin {
 	UNKNOWN("Unknown"),
 	OTHER("Other");
 
-	private String name;
+	private final String name;
 
 	public static LoginPlugin search(String plugin) {
 		for (LoginPlugin loginEnum : LoginPlugin.values()) {

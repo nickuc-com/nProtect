@@ -23,7 +23,7 @@ public final class Group {
 
 	public static Group search(String grupoName) {
 		for(Group grupo : nProtect.getGrupos()) {
-			if(grupo.name.equalsIgnoreCase(grupoName)) return grupo;
+			if (grupo.name.equalsIgnoreCase(grupoName)) return grupo;
 		}
 		return null;
 	}

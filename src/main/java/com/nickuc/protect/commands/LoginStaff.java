@@ -18,9 +18,8 @@ import com.nickuc.ncore.api.plugin.shared.sender.*;
 import com.nickuc.ncore.api.settings.*;
 import com.nickuc.protect.events.*;
 import com.nickuc.protect.management.*;
-import com.nickuc.protect.*;
 import com.nickuc.protect.model.*;
-import org.bukkit.entity.*;
+import com.nickuc.protect.*;
 
 public final class LoginStaff extends SharedCommand<nProtect> {
 
@@ -35,30 +34,34 @@ public final class LoginStaff extends SharedCommand<nProtect> {
 			sender.sendMessage("§cDesculpe, mas este comando está indisponível para o console.");
 			return;
 		}
-		Player player = sender.getSender();
-		if(args.length != 1) {
-			player.sendMessage(Messages.getMessage(MessagesEnum.INVALID_ARGS));
+
+		SharedPlayer sharedPlayer = (SharedPlayer) sender;
+		if (args.length != 1) {
+			sharedPlayer.sendMessage(Messages.getMessage(MessagesEnum.INVALID_ARGS));
 			return;
 		}
-		Account account = new Account(plugin, player);
-		if(!account.isStaffer()) {
-			player.sendMessage(Messages.getMessage(MessagesEnum.NAO_STAFFER));
+		
+		Account account = new Account(plugin, sharedPlayer);
+		if (!account.isStaffer()) {
+			sharedPlayer.sendMessage(Messages.getMessage(MessagesEnum.NAO_STAFFER));
 			return;
 		}
-		if(PlayerCache.isAuthenticated(player)) {
-			player.sendMessage(Messages.getMessage(MessagesEnum.JA_AUTENTICADO));
+
+		if (sharedPlayer.temp().exists("logado")) {
+			sharedPlayer.sendMessage(Messages.getMessage(MessagesEnum.JA_AUTENTICADO));
 			return;
 		}
+
 		String password = args[0];
-		if(!account.getGrupo().getPassword().equals(password)) {
-			if (new PlayerWrongLoginStaffEvent(player.getName(), password).callEvt()) {
-				ConsoleLogger.warning("O jogador " + player.getName() + " " + player.getAddress().getHostString() + " inseriu uma senha incorreta para o loginstaff.");
-				player.kickPlayer(Messages.getMessage(MessagesEnum.INCORRECT_PASS));
+		if (!account.getGrupo().getPassword().equals(password)) {
+			if (new PlayerWrongLoginStaffEvent(sharedPlayer.getName(), password).callEvt()) {
+				ConsoleLogger.warning("O jogador " + sharedPlayer.getName() + " " + sharedPlayer.getAddress() + " inseriu uma senha incorreta para o loginstaff.");
+				sharedPlayer.kickPlayer(Messages.getMessage(MessagesEnum.INCORRECT_PASS));
 			}
 			return;
 		}
-		ConsoleLogger.debug("Login efetuado para " + player.getName() + " para " + account.toString() + ".");
-		account.forceLogin(player);
+		ConsoleLogger.debug("Login efetuado para " + sharedPlayer.getName() + " para " + account.toString() + ".");
+		account.forceLogin(sharedPlayer);
 	}
 
 }
