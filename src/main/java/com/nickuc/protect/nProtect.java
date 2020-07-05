@@ -89,13 +89,13 @@ public class nProtect extends AbstractPlugin {
 
 	private void setupLoginPlugin() {
 		PluginManager pm = Bukkit.getPluginManager();
-		if(pm.getPlugin("nLogin") != null) {
+		if (pm.getPlugin("nLogin") != null) {
 			nLogin nlogin = new nLogin();
 			setLoginProvider(nlogin, nlogin, LoginPlugin.NLOGIN);
-		} else if(pm.getPlugin("AuthMe") != null) {
+		} else if (pm.getPlugin("AuthMe") != null) {
 			AuthMe authme = new AuthMe();
 			setLoginProvider(authme, authme, LoginPlugin.AUTHME);
-		} else if(pm.getPlugin("Login") != null) {
+		} else if (pm.getPlugin("Login") != null) {
 			try {
 				Class.forName("rush.login.events.PlayerAuthLoginEvent");
 				Class.forName("rush.login.events.PlayerAuthRegisterEvent");
@@ -103,12 +103,7 @@ public class nProtect extends AbstractPlugin {
 				setLoginProvider(mambalogin, mambalogin, LoginPlugin.MAMBALOGIN);
 			} catch (ClassNotFoundException e) {}
 		} else {
-			setLoginProvider(new LoginProvider() {
-				@Override
-				public LoginPlugin getLoginPlugin() {
-					return LoginPlugin.UNKNOWN;
-				}
-			});
+			setLoginProvider(() -> LoginPlugin.UNKNOWN);
 			ConsoleLogger.warning("Nenhum plugin de login detectado. Usando listeners do Bukkit");
 		}
 	}
@@ -119,7 +114,7 @@ public class nProtect extends AbstractPlugin {
 
 	private boolean setupVault() {
 		PluginManager pm = Bukkit.getPluginManager();
-		if(pm.getPlugin("Vault") != null) {
+		if (pm.getPlugin("Vault") != null) {
 			RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
 		    if (permissionProvider != null) {
 		    	permission = permissionProvider.getProvider();
@@ -131,7 +126,7 @@ public class nProtect extends AbstractPlugin {
 
 	private void config() {
 		nConfig config = new nConfig("config.yml", getDataFolder());
-		if(!config.exists()) {
+		if (!config.exists()) {
 			config.saveDefaultConfig("config.yml");
 		}
 		for(String grupo : config.getConfigurationSection("Config.Grupos")) {

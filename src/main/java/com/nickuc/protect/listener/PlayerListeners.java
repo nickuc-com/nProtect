@@ -13,12 +13,14 @@
 package com.nickuc.protect.listener;
 
 import com.nickuc.ncore.api.plugin.bukkit.events.Listener;
-import com.nickuc.ncore.api.plugin.bukkit.reflection.packets.*;
+import com.nickuc.ncore.api.plugin.shared.*;
+import com.nickuc.ncore.api.plugin.shared.sender.*;
 import com.nickuc.ncore.api.settings.*;
+import com.nickuc.ncore.plugin.bukkit.reflection.packets.*;
 import com.nickuc.protect.hook.*;
 import com.nickuc.protect.management.*;
-import com.nickuc.protect.*;
 import com.nickuc.protect.model.*;
+import com.nickuc.protect.*;
 import lombok.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -43,19 +45,20 @@ public final class PlayerListeners extends Listener<nProtect> {
 	}
 
 	private void startTask(Player player) {
-		Account account = new Account(plugin, player);
+		SharedPlayer sharedPlayer = SharedUtils.player(player);
+		Account account = new Account(plugin, sharedPlayer);
 		if (!account.isStaffer()) {
-			PlayerCache.add(player.getName());
+			sharedPlayer.temp().define("logado", "");
 			return;
 		}
 
-		if (Settings.getBoolean(SettingsEnum.AUTO_LOGIN) && player.getAddress().getHostString().equals(account.getAddress())) {
-			account.forceLogin(player, true);
+		if (Settings.getBoolean(SettingsEnum.AUTO_LOGIN) && player.getAddress().getAddress().getHostAddress().equals(account.getAddress())) {
+			account.forceLogin(sharedPlayer, true);
 			return;
 		}
 
 		plugin.runTaskLater(false, () -> {
-			if (player.isOnline() && !PlayerCache.isAuthenticated(player)) player.kickPlayer(Messages.getMessage(MessagesEnum.DEMOROU_LOGAR));
+			if (player.isOnline() && !sharedPlayer.temp().exists("logado")) player.kickPlayer(Messages.getMessage(MessagesEnum.DEMOROU_LOGAR));
 		}, Settings.getInt(SettingsEnum.TEMPO_LOGAR), TimeUnit.SECONDS);
 
 		player.setWalkSpeed(0);
@@ -69,7 +72,7 @@ public final class PlayerListeners extends Listener<nProtect> {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer()) && !commandMatches(e.getMessage().toLowerCase().split(" ")[0])) {
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado") && !commandMatches(e.getMessage().toLowerCase().split(" ")[0])) {
 			e.setCancelled(true); 
 			return;
 		}
@@ -87,37 +90,37 @@ public final class PlayerListeners extends Listener<nProtect> {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.getPlayer().teleport(e.getFrom());
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.getPlayer().teleport(e.getFrom());
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		PlayerCache.remove(e.getPlayer().getName());
+		SharedUtils.player(e.getPlayer()).temp().remove("logado");
 	}
 
 	@EventHandler
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.setCancelled(true);
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.setCancelled(true);
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.setCancelled(true);
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.setCancelled(true);
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e) {
-		if (!PlayerCache.isAuthenticated(e.getPlayer())) e.setCancelled(true);
+		if (!SharedUtils.player(e.getPlayer()).temp().exists("logado")) e.setCancelled(true);
 	}
 
 	private boolean commandMatches(String commandToCheck) {
